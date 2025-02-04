@@ -1,2 +1,2 @@
-# Construct-Validation-for-IGGPOP
-It helps validate the IGGPOP constructs after nanopore sequencing.
+# Construct-Validation-for-IGGYPOP
+It helps validate the IGGYPOP constructs after nanopore sequencing.
