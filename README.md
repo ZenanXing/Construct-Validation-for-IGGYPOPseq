@@ -86,7 +86,7 @@ The `SampleInfo.tsv` file should have the following columns. An example file is 
 
 ### Execution
 
-**Run shell script on HPCC environment**
+### Run shell script on HPCC environment
 
   1. Clone or download the pipeline from the GitHub.  
   
@@ -127,7 +127,7 @@ The available options for the shell script are listed below.
       --amino_acid_seq_validation           Translate the first ORF to its amino acid sequence to detect missense/silent mutations
       -h, --help                            Display this help
     
-**Using Docker image**
+### Using Docker image
 
 
 ### Output
