@@ -10,6 +10,8 @@ We established a pipeline that performs comprehensive analysis and generates a c
     - [Requirements](#requirements)
     - [Input](#input)
     - [Execution](#execution)
+        - [Run shell script on HPCC environment](#run-shell-script-on-hpcc-environment)
+        - [Using Docker image](#using-docker-image)
     - [Output](#output)
     - [Help](#help)
 - [License & DOI](#license-&-doi)
@@ -146,9 +148,11 @@ Inputfiles
 
 Output files may be aggregated including information for all samples or provided per sample. Per-sample files will be prefixed with respective aliases and represented below as {{ alias }}.
 
-| Title | File path | Description | Per sample or aggregated |
-|-------|-----------|-------------|--------------------------|
-| Report | ./OutputFiles/Report.html | Report for all samples. | aggregated |
+| Step | Title | File path | Description | Per sample or aggregated |
+|------|-------|-----------|-------------|--------------------------|
+| Demultiplexing | Sorted reads | ./Demultiplexing/final/{{ alias }}.fastq | Reads sorted to each sample. | per-sample |
+| Demultiplexing | Filtered reads | ./Demultiplexing/final/{{ alias }}_filtered.fastq | Filtered reads to each sample. | per-sample |
+| Final | Report | ./OutputFiles/Report.html | Report for all samples. | aggregated |
 
   
 [(Back to top)](#construct-validation-for-iggypopseq)
