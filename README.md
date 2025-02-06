@@ -96,11 +96,11 @@ The `SampleInfo.tsv` file should have the following columns. An example file is 
 .
 ├── Scripts
 │   ├── InputFiles.R
-│   └── Summary.R
-│   └── Report.Rmd
-│   └── minibar.py
-│   └── Construct_Validation_per_sample.sh
-│   └── Demultiplexing_e_E.sh
+│   ├── Summary.R
+│   ├── Report.Rmd
+│   ├── minibar.py
+│   ├── Construct_Validation_per_sample.sh
+│   ├── Demultiplexing_e_E.sh
 │   └── Summary.sh
 └── ConstructValidation.sh
 ```
