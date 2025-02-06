@@ -64,8 +64,8 @@ The input directory for this pipeline should have the following files with the e
 
 ``` 
 ├── Input
-│   ├── SampleInfo.tsv
-│   └── passed_all.fastq
+    ├── SampleInfo.tsv
+    └── passed_all.fastq
 ```
   
 The `SampleInfo.tsv` file should have the following columns. An example file is available [here](./demo/Input/SampleInfo.tsv).  
