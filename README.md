@@ -28,9 +28,8 @@ In general, this pipeline uses `miniBar` for demultiplexing with an optimized co
 [(Back to top)](#construct-validation-for-iggypopseq)
 
 ### Best Clone Selection
-The selection process for the best clone of each construct is outlined in the flowchart below:
+The selection process for the best clone of each construct is outlined in the flowchart below.
 <img src="www/best-clone-selection.png" style="display: block; margin-left: auto; margin-right: auto; height: 400px;" />  
-Briefly, during the analysis procedure, you may found heterogeneous sites after the draft assembly by `samtools`, 
 The results are recorded in the "Summary_by_gene" sheet within the "Summary.xlsx" file. Additionally, all clones associated with unsuccessful constructs are documented in the "Sets_incorrect" sheet of the same file.
   
 [(Back to top)](#construct-validation-for-iggypopseq)
@@ -62,12 +61,12 @@ The required software and version are listed below.
 
 ### Input
 
-The input directory for this pipeline should have the following files with the exact file names and should be organized as follows:
+The input directory for this pipeline should have the following files with the exact file names and should be organized as follows.
 
 ``` 
-├── Input
-    ├── SampleInfo.tsv
-    └── passed_all.fastq
+Input
+├── SampleInfo.tsv
+└── passed_all.fastq
 ```
   
 The `SampleInfo.tsv` file should have the following columns. An example file is available [here](./demo/Input/SampleInfo.tsv).  
@@ -95,7 +94,6 @@ The `SampleInfo.tsv` file should have the following columns. An example file is 
   You can either [clone the repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) using git or download it as a ZIP file. Ensure that the following files are present within their respective folders after downloading.
 
 ``` 
-.
 ├── Scripts
 │   ├── InputFiles.R
 │   ├── Summary.R
@@ -107,10 +105,12 @@ The `SampleInfo.tsv` file should have the following columns. An example file is 
 └── ConstructValidation.sh
 ```
 
-  2. Execute the pipeline using the following command line: 
+  2. Ensure all the required [softwares](#requirements) are properly installed.
+  
+  3. Execute the pipeline using the following command line: 
   
 ```
-./ConstructValidation.sh --script <DIR> -i <DIR> -o <DIR>
+./ConstructValidation.sh --script <DIR> -i <DIR> -o <DIR> [options]
 ```
 
 The available options for the shell script are listed below.
@@ -144,22 +144,80 @@ The available options for the shell script are listed below.
 The results of the pipeline will be stored in a folder named "Analysis_Results" in your output directory and structured as follows:
 
 ```
-(i)
-Inputfiles
-├── references
-│   ├── ref_1.fasta
-│   └── ...
-├── 
-└── 
+(i)                             (ii)                              (iii)
+Inputfiles                      Demultiplexing                    Alignment
+├── references                  ├── final                         ├── set1_1.sam
+│   ├── ref_for_set1.fasta      │   ├── set1_1.fastq              ├── set1_1.bam
+│   └── ...                     │   ├── set1_1_filtered.fastq     ├── set1_1.sorted.bam
+├── config_sample.txt           │   └── ...                       ├── set1_1.sorted.bam.bai
+├── primer_index_info.tsv       ├── config.txt                    └── ...
+├── references_info.tsv         └── e_n_E_Combination.tsv
+├── IndexCombination.txt
+└── references.tsv
+
+
+(iv)                                      (v)                                           (vii)
+Assembly                                  VariantCalling                                VariantIdentification
+├── bedtools                              ├── beforePolishing                           ├── ReferenceORFs
+│   ├── sam                               │   ├── sample_1_bP.vcf                       │   ├── sample_1_bP.vcf
+│   │   ├── set1_1_sam.fasta              │   └── ...                                   │   └── ...
+│   │   ├── set1_1_sam_f.fasta            └── afterPolishing                            └── AssembledORFs
+│   │   └── ...                               ├── racon                                     ├── selectedORF
+│   └── bed                                   │   ├── 1rd                                   │   ├── set1_1
+│       ├── set1_1_draft.fasta                │   │   ├── set1_1_racon_1rd.all.vcf          │   │   ├── set1_draft_orf.fasta
+│       ├── set1_1_draft_f.fasta              │   │   └── ...                               │   │   ├── set1_1_racon_1rd_orf.fasta
+│       └── ...                               │   ├── 2rd                                   │   │   ├── set1_1_racon_3rd_orf.fasta
+├── racon                                     │   └── 3rd                                   │   │   ├── set1_1_medaka_1rd_orf.fasta
+│   ├── 1rd                                   └── medaka_1rd                                │   │   ├── set1_1_racon_2rd_orf.fasta
+│   │   ├── set1_1_racon_1rd.fasta                ├── set1_1_medaka_1rd.all.vcf             │   │   └── set1_1_sam_orf.fasta
+│   │   ├── set1_1_racon_1rd_f.fasta              └── ...                                   │   └── ...
+│   │   └── ...                           (vi)                                              ├── clones
+│   ├── 2rd                               PairwiseAlignment                                 │   ├── set1_comb.fasta
+│   ├── 3rd                               ├── combined_fasta                                │   └── ...
+│   └── sam                               │   ├── set1_1_comb.fasta                         ├── combinedORFs
+└── medaka                                │   ├── set1_1_comb_cleaned.fasta                 └── allORFs
+    └── 1rd                               │   └── ...                                 
+        ├── set1_1_medaka_1rd.fasta       └── clones                                  
+        ├── set1_1_medaka_1rd_f.fasta         ├── set1_comb.fasta                     
+        └── ...                               └── ...                                 
+                                          
+
+(viii)
+OutputFiles
+├── Summary.xlsx                            ├── Demultiplexing_ReadsSummary.tsv
+├── Report.html                             ├── Alignment.tsv
+├── ntAlignment                             ├── Assembled_bP.tsv
+│   ├── set1_nt_align_muscle_clones.html    ├── Racon_1rdP.tsv
+│   ├── set1_1_nt_align_muscle.html         ├── Racon_2rdP.tsv
+│   ├── set1_1_nt_align_muscle_f.html       ├── Racon_3rdP.tsv
+│   ├── set1_1_nt_align_emboss.txt          ├── Medaka_1rdP.tsv
+│   └── ...                                 ├── VariantCalling_racon_1rd.tsv
+├── aaAlignment                             ├── VariantCalling_racon_2rd.tsv
+│   ├── set1_aa_align_muscle_clones.html    ├── VariantCalling_racon_3rd.tsv
+│   ├── set1_1_aa_align_muscle.html         ├── VariantCalling_medaka_1rd.tsv
+│   ├── set1_1_aa_align_muscle_f.html       ├── ntAlignment.tsv
+│   ├── set1_1_aa_align_emboss.txt          ├── aaAlignment.tsv
+│   └── ...                                 ├── Ref_ORF_length.tsv
+                                            └── ORF_length.tsv
+
 ```
 
-Output files may be aggregated including information for all samples or provided per sample. Per-sample files will be prefixed with respective aliases and represented below as {{ alias }}.
+Output files may be aggregated including information after each step for all samples or provided per sample. Per-sample files will be prefixed with respective aliases and represented below as {{ alias }}.
 
-| Step | Title | File path | Description | Per sample or aggregated |
-|------|-------|-----------|-------------|--------------------------|
+| Step | Type | File path | Description | Per sample or aggregated |
+|------|------|-----------|-------------|--------------------------|
 | Demultiplexing | Sorted reads | ./Demultiplexing/final/{{ alias }}.fastq | Reads sorted to each sample. | per-sample |
-| Demultiplexing | Filtered reads | ./Demultiplexing/final/{{ alias }}_filtered.fastq | Filtered reads to each sample. | per-sample |
-| Final | Report | ./OutputFiles/Report.html | Report for all samples. | aggregated |
+| Demultiplexing | Filtered reads | ./Demultiplexing/final/{{ alias }}_filtered.fastq | Filtered reads of each sample. | per-sample |
+| Demultiplexing | Combination of e and E | ./Demultiplexing/e_n_E_Combination.tsv | Reads filtered and mapped using different combinations of parameter e and E in the demultiplexing. | aggregated |
+| Demultiplexing | Summary | ./OutputFiles/Demultiplexing_ReadsSummary.tsv | Stats report of read count after filtering. | aggregated |
+| Mapping | Mapping results | ./Alignment/{{ alias }}.sam | Sam files generated after mapping by minimap2. | per-sample |
+| Mapping | Summary | ./OutputFiles/Alignment.tsv | Read count after filtering. | aggregated |
+| Assembly | Consensus Sequence | ./Assembly/bedtools/sam/{{ alias }}_sam_f.fasta | Consensus Sequence generated by samtools. | per-sample |
+| Assembly | Consensus Sequence | ./Assembly/bedtools/bed/{{ alias }}_draft_f.fasta | Consensus Sequence generated by bedtools after applying variant called by bcftools. | per-sample |
+| Assembly | Consensus Sequence | ./Assembly/racon/1rd/{{ alias }}_racon_1rd_f.fasta | Sequence generated after first round of Racon polishing. The sequences generated after second round and third round of polishing are stored in the subfolders named `2rd` and `3rd`, respectively. | per-sample |
+| Assembly | Consensus Sequence | ./Assembly/medaka/1rd/{{ alias }}_medaka_1rd_f.fasta | Sequence generated after one round of Medaka polishing. This sequence is considered as the final consensus sequence in the analysis | per-sample |
+| Assembly | Summary | ./OutputFiles/Demultiplexing_ReadsSummary.tsv | Read count after filtering. | aggregated |
+| Summary | Report | ./OutputFiles/Report.html | Report for all samples. | aggregated |
 
   
 [(Back to top)](#construct-validation-for-iggypopseq)
@@ -178,7 +236,7 @@ This project is licensed under the GNU General Public License, version 3 (GPLv3)
 
 ## Citation
 
-*Xing Z, Eckhardt J, Vaidya A, Cutler S. BioCurve Analyzer: a web-based shiny app for analyzing biological response curves. (manuscript in preparation)*  
+*(manuscript in preparation)*  
 
 ## References
 
