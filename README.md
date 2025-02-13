@@ -147,7 +147,7 @@ The results will presented as an Excel file and an Report HTML file. The columns
 | Column Name | Type | Description |
 |-------|------|-------------|
 | primer_index | string | Primer index for the construct. |
-| Status | string | Indicates if obtaining a correct clone for the construct was "Successful" or "Failed". |
+| Status | string | Indicates if obtaining a valid clone for the construct was "Successful" or "Failed". |
 | clone_to_keep | string | The best clone chosen by the pipeline. |
 | Reference | string | Name of the reference. |
 | n_frag | int | Number of fragments. |
@@ -277,7 +277,7 @@ This project is licensed under the GNU General Public License, version 3 (GPLv3)
 
 ## Citation
 
-*(manuscript in preparation)*  
+*Dvir G, Xing Z, Beldman I, Wheeldon I, Cutler SR. Rapid synthesis of genes and single-transcript metabolic pathways from oligonucleotide pools: design of STARBURST, a bright autobioluminescent reporter (manuscript in preparation)*  
 
 ## References
 
