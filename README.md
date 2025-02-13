@@ -156,11 +156,11 @@ The final results will be presented as an [Excel file](./demo/Analysis_Results/O
 | Reads_sorted_after_Demultiplexing | int | Reads assigned to the sample after demultiplexing. |
 | Reads_Mapped | int | Reads mapped to the reference sequence for the sample. |
 | Mean_Depth | float | Mean sequencing depth of the sample. |
-| Attention_LowDepth | bool | Indicate if the sample has low sequencing depth. |
-| Attention_PossibleHetSites | bool | Indicate if the sample has possible heterozygous sites. |
+| Attention_LowDepth | bool | Indicates if the sample has low sequencing depth. |
+| Attention_PossibleHetSites | bool | Indicates if the sample has possible heterozygous sites. |
 | CheckINDEL | bool | Indicates if the sample have the false INDELs. |
-| missenseMutation_medaka_1rd | bool | Indicate if the sample has missense Mutation (only valid when the input sequence is CDS). |
-| aaMutation_medaka_1rd | bool | Indicate if the sample retains the same amino acid sequence (only valid when the input sequence is CDS). |
+| missenseMutation_medaka_1rd | bool | Indicates if the sample has missense Mutation (only valid when the input sequence is CDS). |
+| aaMutation_medaka_1rd | bool | Indicates if the sample retains the same amino acid sequence (only valid when the input sequence is CDS). |
 | Alignment_{*} | link | Hyperlinks to the pairwise alignments. |
 | ConsensusSequence | string | Consensus Sequence generated in the final step. |
 | ReferenceSequence | string | Sequence of the reference. |  
