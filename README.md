@@ -143,7 +143,8 @@ The default values of the `q_chopper`, `e`, `E` and `medaka_model` are optimized
 
 ### Output
 
-The results will presented as an Excel file and an Report HTML file. The columns that are most informative in the first two sheets of the Excel file are explained as follows. The description of the columns in the "All_Info" sheet are provided in the [tutorial](./Tutorial.pdf).   
+The final results will be presented as an [Excel file](./demo/Analysis_Results/OutputFiles/Summary.xlsx) and an accompanying [HTML report](./demo/Analysis_Results/OutputFiles/Report.html). The most informative columns in the first two sheets of the Excel file are explained below. Descriptions of the columns in the "All_Info" sheet can be found in the [tutorial](./Tutorial.pdf).   
+
 | Column Name | Type | Description |
 |-------|------|-------------|
 | primer_index | string | Primer index for the construct. |
