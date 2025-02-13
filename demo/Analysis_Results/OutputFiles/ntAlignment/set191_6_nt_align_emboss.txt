@@ -1,0 +1,441 @@
+########################################
+# Program: needle
+# Rundate: Wed 12 Feb 2025 16:31:42
+# Commandline: needle
+#    -asequence ../InputFiles/references/Cc04_g05340.fasta
+#    -bsequence ./combined_fasta/set191_6_comb_cleaned.fasta
+#    -gapopen 10
+#    -gapextend 0.5
+#    -outfile ../OutputFiles/ntAlignment/set191_6_nt_align_emboss.txt
+# Align_format: srspair
+# Report_file: ../OutputFiles/ntAlignment/set191_6_nt_align_emboss.txt
+########################################
+
+#=======================================
+#
+# Aligned_sequences: 2
+# 1: Cc04_g05340
+# 2: set191_6_sam
+# Matrix: EDNAFULL
+# Gap_penalty: 10.0
+# Extend_penalty: 0.5
+#
+# Length: 643
+# Identity:     640/643 (99.5%)
+# Similarity:   640/643 (99.5%)
+# Gaps:           0/643 ( 0.0%)
+# Score: 3192.0
+# 
+#
+#=======================================
+
+Cc04_g05340        1 AATGGCTAAATCTTCTAAGCAAAAGACATCTTCAACTACAACTACTACTA     50
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_sam       1 AATGGCTAAATCTTCTAAGCAAAAGACATCTTCAACTACAACTACTACTA     50
+
+Cc04_g05340       51 CAACTTCTATTGACGCCGATAATAATAATTCTTCTAATTCTACTACTCCT    100
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_sam      51 CAACTTCTATTGACGCCGATAATAATAATTCTTCTAATTCTACTACTCCT    100
+
+Cc04_g05340      101 GTTGTGAAAACCACCAAGACTAAGAGAACTAGAAAGTCTGTTCCTAGAGA    150
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_sam     101 GTTGTGAAAACCACCAAGACTAAGAGAACTAGAAAGTCTGTTCCTAGAGA    150
+
+Cc04_g05340      151 TTCTCCTCAACAAAGATCTTCTGTTTATAGAGGTGTTACTAGACATAGAT    200
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_sam     151 TTCTCCTCAACAAAGATCTTCTGTTTATAGAGGTGTTACTAGACATAGAT    200
+
+Cc04_g05340      201 GGACTGGAAGATATGAAGCTCATCTTTGGGATAAGAATTGTTGGAATGAA    250
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_sam     201 GGACTGGAAGATATGAAGCTCATCTTTGGGATAAGAATTGTTGGAATGAA    250
+
+Cc04_g05340      251 TCTCAAAATAAGAAGGGAAGGCAAGTTTATCTTGGAGCTTATGATGATGA    300
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_sam     251 TCTCAAAATAAGAAGGGAAGGCAAGTTTATCTTGGAGCTTATGATGATGA    300
+
+Cc04_g05340      301 AGAAGCTGCTGCTCATGCTTATGATCTTGCTGCTCTTAAGTATTGGGGAC    350
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_sam     301 AGAAGCTGCTGCTCATGCTTATGATCTTGCTGCTCTTAAGTATTGGGGAC    350
+
+Cc04_g05340      351 AAGATACTATTCTTAATTTTCCTCTTTCTACTTATGGAAATGAACTTAGC    400
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_sam     351 AAGATACTATTCTTAATTTTCCTCTTTCTACTTATGGAAATGAACTTAGC    400
+
+Cc04_g05340      401 GAAATGGAAGGACAATCTAAGGAAGAATATATTGGATCTCTTAGAAGAAA    450
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_sam     401 GAAATGGAAGGACAATCTAAGGAAGAATATATTGGATCTCTTAGAAGAAA    450
+
+Cc04_g05340      451 GTCTAGTGGATTTTCTAGGGGAGTTTCTAAGTATAGAGGAGTTGCTAGAC    500
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_sam     451 GTCTAGTGGATTTTCTAgGGGAGTTTCTAAGTATAGAGGAGTTGCTAGAC    500
+
+Cc04_g05340      501 ACCATCATAATGGAAGATGGGAAGCTAGAATTGGAAGAGTTTTTGGAAAT    550
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_sam     501 ACCATCATAATGGAAGATGGGAAGCTAGAATTGGAAGAGTTTTTGGAAAT    550
+
+Cc04_g05340      551 AAGTATCTTTATTTGGGAACTTATGTTACTCCGATGCATGTTATGCAACT    600
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_sam     551 AAGTATCTTTATTTGGGAACTTATGTTACTCCGATGCATGTTATGCAACT    600
+
+Cc04_g05340      601 TCATAAGAAGAAGCAAAGACTTCATATGACTTGGCAACAATGA    643
+                     ||||||||||||||||||||||||||||||||...||||||||
+set191_6_sam     601 TCATAAGAAGAAGCAAAGACTTCATATGACTTNNAAACAATGA    643
+
+
+#=======================================
+#
+# Aligned_sequences: 2
+# 1: Cc04_g05340
+# 2: set191_6_draft
+# Matrix: EDNAFULL
+# Gap_penalty: 10.0
+# Extend_penalty: 0.5
+#
+# Length: 643
+# Identity:     639/643 (99.4%)
+# Similarity:   639/643 (99.4%)
+# Gaps:           0/643 ( 0.0%)
+# Score: 3185.0
+# 
+#
+#=======================================
+
+Cc04_g05340        1 AATGGCTAAATCTTCTAAGCAAAAGACATCTTCAACTACAACTACTACTA     50
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_draf      1 AATGGCTAAATCTTCTAAGCAAAAGACATCTTCAACTACAACTACTACTA     50
+
+Cc04_g05340       51 CAACTTCTATTGACGCCGATAATAATAATTCTTCTAATTCTACTACTCCT    100
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_draf     51 CAACTTCTATTGACGCCGATAATAATAATTCTTCTAATTCTACTACTCCT    100
+
+Cc04_g05340      101 GTTGTGAAAACCACCAAGACTAAGAGAACTAGAAAGTCTGTTCCTAGAGA    150
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_draf    101 GTTGTGAAAACCACCAAGACTAAGAGAACTAGAAAGTCTGTTCCTAGAGA    150
+
+Cc04_g05340      151 TTCTCCTCAACAAAGATCTTCTGTTTATAGAGGTGTTACTAGACATAGAT    200
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_draf    151 TTCTCCTCAACAAAGATCTTCTGTTTATAGAGGTGTTACTAGACATAGAT    200
+
+Cc04_g05340      201 GGACTGGAAGATATGAAGCTCATCTTTGGGATAAGAATTGTTGGAATGAA    250
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_draf    201 GGACTGGAAGATATGAAGCTCATCTTTGGGATAAGAATTGTTGGAATGAA    250
+
+Cc04_g05340      251 TCTCAAAATAAGAAGGGAAGGCAAGTTTATCTTGGAGCTTATGATGATGA    300
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_draf    251 TCTCAAAATAAGAAGGGAAGGCAAGTTTATCTTGGAGCTTATGATGATGA    300
+
+Cc04_g05340      301 AGAAGCTGCTGCTCATGCTTATGATCTTGCTGCTCTTAAGTATTGGGGAC    350
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_draf    301 AGAAGCTGCTGCTCATGCTTATGATCTTGCTGCTCTTAAGTATTGGGGAC    350
+
+Cc04_g05340      351 AAGATACTATTCTTAATTTTCCTCTTTCTACTTATGGAAATGAACTTAGC    400
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_draf    351 AAGATACTATTCTTAATTTTCCTCTTTCTACTTATGGAAATGAACTTAGC    400
+
+Cc04_g05340      401 GAAATGGAAGGACAATCTAAGGAAGAATATATTGGATCTCTTAGAAGAAA    450
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_draf    401 GAAATGGAAGGACAATCTAAGGAAGAATATATTGGATCTCTTAGAAGAAA    450
+
+Cc04_g05340      451 GTCTAGTGGATTTTCTAGGGGAGTTTCTAAGTATAGAGGAGTTGCTAGAC    500
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_draf    451 GTCTAGTGGATTTTCTAgGGGAGTTTCTAAGTATAGAGGAGTTGCTAGAC    500
+
+Cc04_g05340      501 ACCATCATAATGGAAGATGGGAAGCTAGAATTGGAAGAGTTTTTGGAAAT    550
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_draf    501 ACCATCATAATGGAAGATGGGAAGCTAGAATTGGAAGAGTTTTTGGAAAT    550
+
+Cc04_g05340      551 AAGTATCTTTATTTGGGAACTTATGTTACTCCGATGCATGTTATGCAACT    600
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_draf    551 AAGTATCTTTATTTGGGAACTTATGTTACTCCGATGCATGTTATGCAACT    600
+
+Cc04_g05340      601 TCATAAGAAGAAGCAAAGACTTCATATGACTTGGCAACAATGA    643
+                     |||||||||||||||||||||||||||||||....||||||||
+set191_6_draf    601 TCATAAGAAGAAGCAAAGACTTCATATGACTNNNAAACAATGA    643
+
+
+#=======================================
+#
+# Aligned_sequences: 2
+# 1: Cc04_g05340
+# 2: set191_6_racon_1rd
+# Matrix: EDNAFULL
+# Gap_penalty: 10.0
+# Extend_penalty: 0.5
+#
+# Length: 643
+# Identity:     640/643 (99.5%)
+# Similarity:   640/643 (99.5%)
+# Gaps:           2/643 ( 0.3%)
+# Score: 3185.5
+# 
+#
+#=======================================
+
+Cc04_g05340        1 AATGGCTAAATCTTCTAAGCAAAAGACATCTTCAACTACAACTACTACTA     50
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_raco      1 AATGGCTAAATCTTCTAAGCAAAAGACATCTTCAACTACAACTACTACTA     50
+
+Cc04_g05340       51 CAACTTCTATTGACGCCGATAATAATAATTCTTCTAATTCTACTACTCCT    100
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_raco     51 CAACTTCTATTGACGCCGATAATAATAATTCTTCTAATTCTACTACTCCT    100
+
+Cc04_g05340      101 GTTGTGAAAACCACCAAGACTAAGAGAACTAGAAAGTCTGTTCCTAGAGA    150
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_raco    101 GTTGTGAAAACCACCAAGACTAAGAGAACTAGAAAGTCTGTTCCTAGAGA    150
+
+Cc04_g05340      151 TTCTCCTCAACAAAGATCTTCTGTTTATAGAGGTGTTACTAGACATAGAT    200
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_raco    151 TTCTCCTCAACAAAGATCTTCTGTTTATAGAGGTGTTACTAGACATAGAT    200
+
+Cc04_g05340      201 GGACTGGAAGATATGAAGCTCATCTTTGGGATAAGAATTGTTGGAATGAA    250
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_raco    201 GGACTGGAAGATATGAAGCTCATCTTTGGGATAAGAATTGTTGGAATGAA    250
+
+Cc04_g05340      251 TCTCAAAATAAGAAGGGAAGGCAAGTTTATCTTGGAGCTTATGATGATGA    300
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_raco    251 TCTCAAAATAAGAAGGGAAGGCAAGTTTATCTTGGAGCTTATGATGATGA    300
+
+Cc04_g05340      301 AGAAGCTGCTGCTCATGCTTATGATCTTGCTGCTCTTAAGTATTGGGGAC    350
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_raco    301 AGAAGCTGCTGCTCATGCTTATGATCTTGCTGCTCTTAAGTATTGGGGAC    350
+
+Cc04_g05340      351 AAGATACTATTCTTAATTTTCCTCTTTCTACTTATGGAAATGAACTTAGC    400
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_raco    351 AAGATACTATTCTTAATTTTCCTCTTTCTACTTATGGAAATGAACTTAGC    400
+
+Cc04_g05340      401 GAAATGGAAGGACAATCTAAGGAAGAATATATTGGATCTCTTAGAAGAAA    450
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_raco    401 GAAATGGAAGGACAATCTAAGGAAGAATATATTGGATCTCTTAGAAGAAA    450
+
+Cc04_g05340      451 GTCTAGTGGATTTTCTAGGGGAGTTTCTAAGTATAGAGGAGTTGCTAGAC    500
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_raco    451 GTCTAGTGGATTTTCTAGGGGAGTTTCTAAGTATAGAGGAGTTGCTAGAC    500
+
+Cc04_g05340      501 ACCATCATAATGGAAGATGGGAAGCTAGAATTGGAAGAGTTTTTGGAAAT    550
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_raco    501 ACCATCATAATGGAAGATGGGAAGCTAGAATTGGAAGAGTTTTTGGAAAT    550
+
+Cc04_g05340      551 AAGTATCTTTATTTGGGAACTTATGTTACTCCGATGCATGTTATGCAACT    600
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_raco    551 AAGTATCTTTATTTGGGAACTTATGTTACTCCGATGCATGTTATGCAACT    600
+
+Cc04_g05340      601 TCATAAGAAGAAGCAAAGACTTCATATGACTTGGCAACAATGA    643
+                     ||||||||||||||||||||||||||||||||  .||||||||
+set191_6_raco    601 TCATAAGAAGAAGCAAAGACTTCATATGACTT--AAACAATGA    641
+
+
+#=======================================
+#
+# Aligned_sequences: 2
+# 1: Cc04_g05340
+# 2: set191_6_racon_2rd
+# Matrix: EDNAFULL
+# Gap_penalty: 10.0
+# Extend_penalty: 0.5
+#
+# Length: 643
+# Identity:     640/643 (99.5%)
+# Similarity:   640/643 (99.5%)
+# Gaps:           2/643 ( 0.3%)
+# Score: 3185.5
+# 
+#
+#=======================================
+
+Cc04_g05340        1 AATGGCTAAATCTTCTAAGCAAAAGACATCTTCAACTACAACTACTACTA     50
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_raco      1 AATGGCTAAATCTTCTAAGCAAAAGACATCTTCAACTACAACTACTACTA     50
+
+Cc04_g05340       51 CAACTTCTATTGACGCCGATAATAATAATTCTTCTAATTCTACTACTCCT    100
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_raco     51 CAACTTCTATTGACGCCGATAATAATAATTCTTCTAATTCTACTACTCCT    100
+
+Cc04_g05340      101 GTTGTGAAAACCACCAAGACTAAGAGAACTAGAAAGTCTGTTCCTAGAGA    150
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_raco    101 GTTGTGAAAACCACCAAGACTAAGAGAACTAGAAAGTCTGTTCCTAGAGA    150
+
+Cc04_g05340      151 TTCTCCTCAACAAAGATCTTCTGTTTATAGAGGTGTTACTAGACATAGAT    200
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_raco    151 TTCTCCTCAACAAAGATCTTCTGTTTATAGAGGTGTTACTAGACATAGAT    200
+
+Cc04_g05340      201 GGACTGGAAGATATGAAGCTCATCTTTGGGATAAGAATTGTTGGAATGAA    250
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_raco    201 GGACTGGAAGATATGAAGCTCATCTTTGGGATAAGAATTGTTGGAATGAA    250
+
+Cc04_g05340      251 TCTCAAAATAAGAAGGGAAGGCAAGTTTATCTTGGAGCTTATGATGATGA    300
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_raco    251 TCTCAAAATAAGAAGGGAAGGCAAGTTTATCTTGGAGCTTATGATGATGA    300
+
+Cc04_g05340      301 AGAAGCTGCTGCTCATGCTTATGATCTTGCTGCTCTTAAGTATTGGGGAC    350
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_raco    301 AGAAGCTGCTGCTCATGCTTATGATCTTGCTGCTCTTAAGTATTGGGGAC    350
+
+Cc04_g05340      351 AAGATACTATTCTTAATTTTCCTCTTTCTACTTATGGAAATGAACTTAGC    400
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_raco    351 AAGATACTATTCTTAATTTTCCTCTTTCTACTTATGGAAATGAACTTAGC    400
+
+Cc04_g05340      401 GAAATGGAAGGACAATCTAAGGAAGAATATATTGGATCTCTTAGAAGAAA    450
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_raco    401 GAAATGGAAGGACAATCTAAGGAAGAATATATTGGATCTCTTAGAAGAAA    450
+
+Cc04_g05340      451 GTCTAGTGGATTTTCTAGGGGAGTTTCTAAGTATAGAGGAGTTGCTAGAC    500
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_raco    451 GTCTAGTGGATTTTCTAGGGGAGTTTCTAAGTATAGAGGAGTTGCTAGAC    500
+
+Cc04_g05340      501 ACCATCATAATGGAAGATGGGAAGCTAGAATTGGAAGAGTTTTTGGAAAT    550
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_raco    501 ACCATCATAATGGAAGATGGGAAGCTAGAATTGGAAGAGTTTTTGGAAAT    550
+
+Cc04_g05340      551 AAGTATCTTTATTTGGGAACTTATGTTACTCCGATGCATGTTATGCAACT    600
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_raco    551 AAGTATCTTTATTTGGGAACTTATGTTACTCCGATGCATGTTATGCAACT    600
+
+Cc04_g05340      601 TCATAAGAAGAAGCAAAGACTTCATATGACTTGGCAACAATGA    643
+                     ||||||||||||||||||||||||||||||||  .||||||||
+set191_6_raco    601 TCATAAGAAGAAGCAAAGACTTCATATGACTT--AAACAATGA    641
+
+
+#=======================================
+#
+# Aligned_sequences: 2
+# 1: Cc04_g05340
+# 2: set191_6_racon_3rd
+# Matrix: EDNAFULL
+# Gap_penalty: 10.0
+# Extend_penalty: 0.5
+#
+# Length: 643
+# Identity:     640/643 (99.5%)
+# Similarity:   640/643 (99.5%)
+# Gaps:           2/643 ( 0.3%)
+# Score: 3185.5
+# 
+#
+#=======================================
+
+Cc04_g05340        1 AATGGCTAAATCTTCTAAGCAAAAGACATCTTCAACTACAACTACTACTA     50
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_raco      1 AATGGCTAAATCTTCTAAGCAAAAGACATCTTCAACTACAACTACTACTA     50
+
+Cc04_g05340       51 CAACTTCTATTGACGCCGATAATAATAATTCTTCTAATTCTACTACTCCT    100
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_raco     51 CAACTTCTATTGACGCCGATAATAATAATTCTTCTAATTCTACTACTCCT    100
+
+Cc04_g05340      101 GTTGTGAAAACCACCAAGACTAAGAGAACTAGAAAGTCTGTTCCTAGAGA    150
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_raco    101 GTTGTGAAAACCACCAAGACTAAGAGAACTAGAAAGTCTGTTCCTAGAGA    150
+
+Cc04_g05340      151 TTCTCCTCAACAAAGATCTTCTGTTTATAGAGGTGTTACTAGACATAGAT    200
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_raco    151 TTCTCCTCAACAAAGATCTTCTGTTTATAGAGGTGTTACTAGACATAGAT    200
+
+Cc04_g05340      201 GGACTGGAAGATATGAAGCTCATCTTTGGGATAAGAATTGTTGGAATGAA    250
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_raco    201 GGACTGGAAGATATGAAGCTCATCTTTGGGATAAGAATTGTTGGAATGAA    250
+
+Cc04_g05340      251 TCTCAAAATAAGAAGGGAAGGCAAGTTTATCTTGGAGCTTATGATGATGA    300
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_raco    251 TCTCAAAATAAGAAGGGAAGGCAAGTTTATCTTGGAGCTTATGATGATGA    300
+
+Cc04_g05340      301 AGAAGCTGCTGCTCATGCTTATGATCTTGCTGCTCTTAAGTATTGGGGAC    350
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_raco    301 AGAAGCTGCTGCTCATGCTTATGATCTTGCTGCTCTTAAGTATTGGGGAC    350
+
+Cc04_g05340      351 AAGATACTATTCTTAATTTTCCTCTTTCTACTTATGGAAATGAACTTAGC    400
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_raco    351 AAGATACTATTCTTAATTTTCCTCTTTCTACTTATGGAAATGAACTTAGC    400
+
+Cc04_g05340      401 GAAATGGAAGGACAATCTAAGGAAGAATATATTGGATCTCTTAGAAGAAA    450
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_raco    401 GAAATGGAAGGACAATCTAAGGAAGAATATATTGGATCTCTTAGAAGAAA    450
+
+Cc04_g05340      451 GTCTAGTGGATTTTCTAGGGGAGTTTCTAAGTATAGAGGAGTTGCTAGAC    500
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_raco    451 GTCTAGTGGATTTTCTAGGGGAGTTTCTAAGTATAGAGGAGTTGCTAGAC    500
+
+Cc04_g05340      501 ACCATCATAATGGAAGATGGGAAGCTAGAATTGGAAGAGTTTTTGGAAAT    550
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_raco    501 ACCATCATAATGGAAGATGGGAAGCTAGAATTGGAAGAGTTTTTGGAAAT    550
+
+Cc04_g05340      551 AAGTATCTTTATTTGGGAACTTATGTTACTCCGATGCATGTTATGCAACT    600
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_raco    551 AAGTATCTTTATTTGGGAACTTATGTTACTCCGATGCATGTTATGCAACT    600
+
+Cc04_g05340      601 TCATAAGAAGAAGCAAAGACTTCATATGACTTGGCAACAATGA    643
+                     ||||||||||||||||||||||||||||||||  .||||||||
+set191_6_raco    601 TCATAAGAAGAAGCAAAGACTTCATATGACTT--AAACAATGA    641
+
+
+#=======================================
+#
+# Aligned_sequences: 2
+# 1: Cc04_g05340
+# 2: set191_6_medaka_1rd
+# Matrix: EDNAFULL
+# Gap_penalty: 10.0
+# Extend_penalty: 0.5
+#
+# Length: 643
+# Identity:     640/643 (99.5%)
+# Similarity:   640/643 (99.5%)
+# Gaps:           2/643 ( 0.3%)
+# Score: 3185.5
+# 
+#
+#=======================================
+
+Cc04_g05340        1 AATGGCTAAATCTTCTAAGCAAAAGACATCTTCAACTACAACTACTACTA     50
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_meda      1 AATGGCTAAATCTTCTAAGCAAAAGACATCTTCAACTACAACTACTACTA     50
+
+Cc04_g05340       51 CAACTTCTATTGACGCCGATAATAATAATTCTTCTAATTCTACTACTCCT    100
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_meda     51 CAACTTCTATTGACGCCGATAATAATAATTCTTCTAATTCTACTACTCCT    100
+
+Cc04_g05340      101 GTTGTGAAAACCACCAAGACTAAGAGAACTAGAAAGTCTGTTCCTAGAGA    150
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_meda    101 GTTGTGAAAACCACCAAGACTAAGAGAACTAGAAAGTCTGTTCCTAGAGA    150
+
+Cc04_g05340      151 TTCTCCTCAACAAAGATCTTCTGTTTATAGAGGTGTTACTAGACATAGAT    200
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_meda    151 TTCTCCTCAACAAAGATCTTCTGTTTATAGAGGTGTTACTAGACATAGAT    200
+
+Cc04_g05340      201 GGACTGGAAGATATGAAGCTCATCTTTGGGATAAGAATTGTTGGAATGAA    250
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_meda    201 GGACTGGAAGATATGAAGCTCATCTTTGGGATAAGAATTGTTGGAATGAA    250
+
+Cc04_g05340      251 TCTCAAAATAAGAAGGGAAGGCAAGTTTATCTTGGAGCTTATGATGATGA    300
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_meda    251 TCTCAAAATAAGAAGGGAAGGCAAGTTTATCTTGGAGCTTATGATGATGA    300
+
+Cc04_g05340      301 AGAAGCTGCTGCTCATGCTTATGATCTTGCTGCTCTTAAGTATTGGGGAC    350
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_meda    301 AGAAGCTGCTGCTCATGCTTATGATCTTGCTGCTCTTAAGTATTGGGGAC    350
+
+Cc04_g05340      351 AAGATACTATTCTTAATTTTCCTCTTTCTACTTATGGAAATGAACTTAGC    400
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_meda    351 AAGATACTATTCTTAATTTTCCTCTTTCTACTTATGGAAATGAACTTAGC    400
+
+Cc04_g05340      401 GAAATGGAAGGACAATCTAAGGAAGAATATATTGGATCTCTTAGAAGAAA    450
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_meda    401 GAAATGGAAGGACAATCTAAGGAAGAATATATTGGATCTCTTAGAAGAAA    450
+
+Cc04_g05340      451 GTCTAGTGGATTTTCTAGGGGAGTTTCTAAGTATAGAGGAGTTGCTAGAC    500
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_meda    451 GTCTAGTGGATTTTCTAGGGGAGTTTCTAAGTATAGAGGAGTTGCTAGAC    500
+
+Cc04_g05340      501 ACCATCATAATGGAAGATGGGAAGCTAGAATTGGAAGAGTTTTTGGAAAT    550
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_meda    501 ACCATCATAATGGAAGATGGGAAGCTAGAATTGGAAGAGTTTTTGGAAAT    550
+
+Cc04_g05340      551 AAGTATCTTTATTTGGGAACTTATGTTACTCCGATGCATGTTATGCAACT    600
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+set191_6_meda    551 AAGTATCTTTATTTGGGAACTTATGTTACTCCGATGCATGTTATGCAACT    600
+
+Cc04_g05340      601 TCATAAGAAGAAGCAAAGACTTCATATGACTTGGCAACAATGA    643
+                     ||||||||||||||||||||||||||||||||  .||||||||
+set191_6_meda    601 TCATAAGAAGAAGCAAAGACTTCATATGACTT--AAACAATGA    641
+
+
+#---------------------------------------
+#---------------------------------------
