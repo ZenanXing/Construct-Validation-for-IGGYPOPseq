@@ -242,7 +242,7 @@ p <- ggplot(df_plot, aes(x = n_frags, y = n, fill = Assembly_Status, group = Ass
   theme(axis.text= element_text(size = 16),
         axis.title = element_text(size = 16),
         legend.position = "right",
-        legend.title = element_text(size = 16),
+        legend.title = element_blank(),
         legend.text = element_text(size = 16)) + 
   theme(rect = element_rect(fill = "transparent"),# Make background transparent
         plot.margin = margin(20, 20, 20, 20, "pt"))
@@ -287,6 +287,7 @@ df_plot_2 <- df_exp %>%
 df_plot <- rbind(df_plot_1, df_plot_2)
 
 df_plot$Assembly_Status_f <- factor(df_plot$Assembly_Status_f, levels = c("Assembled", "Error Free"))
+limits <- factor(seq(min(df_plot$n_clones), max(df_plot$n_clones), 1))
 df_plot$n_clones <- as.numeric(df_plot$n_clones)
 df_plot$n_clones <- factor(df_plot$n_clones, levels = seq(min(df_plot$n_clones), max(df_plot$n_clones), 1))
 
@@ -294,7 +295,7 @@ df_plot$n_clones <- factor(df_plot$n_clones, levels = seq(min(df_plot$n_clones),
 p <- ggplot(df_plot, aes(x = n_clones, y = n_constructs, fill = Assembly_Status_f)) + 
   geom_bar(stat = "identity") +
   #geom_text(aes(y = n_genes, label = lab, hjust = -0.1), position = position_dodge(width = 0.9), vjust = 0.5, size = 4) +
-  scale_x_discrete(limits = as.character(0:6)) + 
+  scale_x_discrete(limits = limits) + 
   facet_wrap(.~Assembly_Status_f, ncol = 1, scales = "free_y") +
   ylab("Constructs (n)") +
   xlab("Clones/Construct") +
@@ -306,7 +307,9 @@ p <- ggplot(df_plot, aes(x = n_clones, y = n_constructs, fill = Assembly_Status_
   theme(axis.text= element_text(size = 16),
         axis.title = element_text(size = 16),
         strip.text = element_text(size = 16),
-        legend.position = "none") + 
+        legend.position = "right",
+        legend.title = element_blank(),
+        legend.text = element_text(size = 16)) + 
   theme(rect = element_rect(fill = "transparent"),# Make background transparent
         plot.margin = margin(20, 20, 20, 20, "pt"))
 
