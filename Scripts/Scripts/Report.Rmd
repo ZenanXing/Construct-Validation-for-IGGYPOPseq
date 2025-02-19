@@ -121,10 +121,11 @@ p <- ggplot(df_plot_f, aes(x = n_frags, y = n_genes, fill = Catgry, group = Catg
   geom_bar(stat = "identity", position = position_dodge()) +
   geom_text(aes(y = n_genes, label = lab, hjust = -0.1), position = position_dodge(width = 0.9), vjust = 0.5, size = 4) +
   coord_flip() + 
-  xlab("Number of Fragments") +
-  ylab("Number of Genes") +
+  xlab("Fragments (n)") +
+  ylab("Constructs (n)") +
   ylim(0, max(df_plot_f$n_genes) + 5) +
-  scale_fill_manual(values = c("complete" = "#A6CEE3", "total" = "#1F78B4"), breaks = c("complete", "total")) +
+  scale_fill_manual(values = c("complete" = "#5ce7e4", "total" = "#a1cdcc"), breaks = c("complete", "total"),
+                    labels = c("complete" = "Assembled", "total" = "Total")) +
   theme_bw() +
   theme(panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank()) + 
@@ -143,7 +144,7 @@ p <- ggplot(df_plot_f, aes(x = n_frags, y = n_genes, fill = Catgry, group = Catg
 p
 ```
 
-### Correct sequence vs Number of fragments
+### Error-free sequence vs Number of fragments
 ```{r echo = FALSE, results = 'asis'}
 
 df_plot_1 <- df_exp %>% 
@@ -190,10 +191,11 @@ p <- ggplot(df_plot_f, aes(x = n_frags, y = n_genes, fill = Catgry, group = Catg
   geom_bar(stat = "identity", position = position_dodge()) +
   geom_text(aes(y = n_genes, label = lab, hjust = -0.1), position = position_dodge(width = 0.9), vjust = 0.5, size = 4) +
   coord_flip() + 
-  xlab("Number of Fragments") +
-  ylab("Number of Genes") +
+  xlab("Fragments (n)") +
+  ylab("Constructs (n)") +
   ylim(0, max(df_plot_f$n_genes) + 5) +
-  scale_fill_manual(values = c("correct" = "#B2DF8A", "total" = "#33A02C"), breaks = c("correct", "total")) +
+  scale_fill_manual(values = c("correct" = "#73EC8B", "total" = "#A4D1A7"), breaks = c("correct", "total"),
+                    labels = c("correct" = "Error Free", "total" = "Total")) +
   theme_bw() +
   theme(panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank()) + 
@@ -230,7 +232,10 @@ p <- ggplot(df_plot, aes(x = n_frags, y = n, fill = Assembly_Status, group = Ass
   xlab("Fragments (n)") +
   ylab("Clones (n)") +
   #ylim(0, max(df_plot_f$n_genes) + 5) +
-  scale_fill_manual(values = c("error_free" = "#B2DF8A", "snp_indel" = "#A6CEE3", "unassembled" = "#cdcdcd")) +
+  scale_fill_manual(name = "Assembly Status", 
+                    breaks = c("error_free", "snp_indel", "unassembled"), 
+                    values = c("error_free" = "#73EC8B", "snp_indel" = "#87A2FF", "unassembled" = "#cdcdcd"),
+                    labels = c("error_free" = "Error Free", "snp_indel" = "SNP/INDEL", "unassembled" = "Unassembled")) +
   theme_bw() +
   theme(panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank()) + 
@@ -256,38 +261,45 @@ df_plot_1 <- df_exp %>%
   dplyr::select(primer_index, SampleID, Assembly_Status) %>% 
   group_by(primer_index, Assembly_Status) %>% 
   dplyr::summarise(n_clones = n_distinct(SampleID), .groups = "drop") %>% 
+  pivot_wider(names_from = Assembly_Status, values_from = n_clones) %>% 
+  mutate(across((ncol(.)-2):ncol(.), ~ replace_na(., 0))) %>% 
+  pivot_longer(cols = 2:4, names_to = "Assembly_Status", values_to = "n_clones") %>% 
   group_by(Assembly_Status, n_clones) %>% 
-  dplyr::summarise(n_constructs = n(), .groups = "drop")
+  dplyr::summarise(n_constructs = n(), .groups = "drop") %>% 
+  filter(Assembly_Status == "error_free") %>% 
+  dplyr::select(n_clones, n_constructs) %>% 
+  mutate(Assembly_Status_f = "Error Free")
 
 df_plot_2 <- df_exp %>% 
   dplyr::select(primer_index, SampleID, Assembly_Status) %>%
-  mutate(Assembly_Status_f = ifelse(Assembly_Status=="unassembled", NA, "Assembled")) %>% 
-  drop_na() %>% 
+  mutate(Assembly_Status_f = ifelse(Assembly_Status=="unassembled", "Unassembled", "Assembled")) %>% 
+  #drop_na() %>% 
   dplyr::select(primer_index, SampleID, Assembly_Status_f) %>% 
   group_by(primer_index, Assembly_Status_f) %>% 
   dplyr::summarise(n_clones = n_distinct(SampleID), .groups = "drop") %>% 
+  pivot_wider(names_from = Assembly_Status_f, values_from = n_clones) %>% 
+  mutate(across((ncol(.)-1):ncol(.), ~ replace_na(., 0))) %>% 
+  pivot_longer(cols = 2:3, names_to = "Assembly_Status_f", values_to = "n_clones") %>% 
   group_by(Assembly_Status_f, n_clones) %>% 
-  dplyr::summarise(n_constructs = n(), .groups = "drop")
+  dplyr::summarise(n_constructs = n(), .groups = "drop") %>% 
+  filter(Assembly_Status_f == "Assembled")
 
-df_plot <- df_plot_1 %>% 
-  filter(Assembly_Status == "error_free") %>% 
-  dplyr::select(n_clones, n_constructs) %>% 
-  mutate(Assembly_Status_f = "Error Free") %>% 
-  rbind(df_plot_2)
+df_plot <- rbind(df_plot_1, df_plot_2)
 
 df_plot$Assembly_Status_f <- factor(df_plot$Assembly_Status_f, levels = c("Assembled", "Error Free"))
 df_plot$n_clones <- as.numeric(df_plot$n_clones)
 df_plot$n_clones <- factor(df_plot$n_clones, levels = seq(min(df_plot$n_clones), max(df_plot$n_clones), 1))
 
-
+# plot - 400*500
 p <- ggplot(df_plot, aes(x = n_clones, y = n_constructs, fill = Assembly_Status_f)) + 
   geom_bar(stat = "identity") +
   #geom_text(aes(y = n_genes, label = lab, hjust = -0.1), position = position_dodge(width = 0.9), vjust = 0.5, size = 4) +
-  facet_wrap(.~Assembly_Status_f, ncol = 1) +
+  scale_x_discrete(limits = as.character(0:6)) + 
+  facet_wrap(.~Assembly_Status_f, ncol = 1, scales = "free_y") +
   ylab("Constructs (n)") +
-  xlab("Clones/Construct (n)") +
+  xlab("Clones/Construct") +
   #ylim(0, max(df_plot_f$n_genes) + 5) +
-  scale_fill_manual(values = c("Error Free" = "#B2DF8A", "Assembled" = "#A6CEE3")) +
+  scale_fill_manual(values = c("Error Free" = "#73EC8B", "Assembled" = "#5ce7e4")) + #b5ff16
   theme_bw() +
   theme(panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank()) + 
