@@ -60,6 +60,21 @@ The required software and R packages (R version 4.4.2), along with their respect
 | [muscle3](https://www.drive5.com/muscle/) | 3.8.31 |                          
 | [parallel](https://www.gnu.org/software/parallel/sphinx.html) | 20220122 |    
   
+| Software                                                                 | Version |    | Package                                                                   | Version |
+|--------------------------------------------------------------------------|---------|----|---------------------------------------------------------------------------|---------|
+| [minibar](https://github.com/calacademy-research/minibar)              | 0.25    |    | [tidyverse](https://github.com/tidyverse/tidyverse)                     | 2.0.0   |
+| [chopper](https://github.com/wdecoster/chopper)                        | 0.8.0   |    | [biostrings](https://github.com/Bioconductor/Biostrings)                | 2.74.0  |
+| [minimap2](https://github.com/lh3/minimap2)                           | 2.24    |    | [openxlsx](https://github.com/awalker89/openxlsx)                       | 4.2.7.1 |
+| [samtools](https://github.com/samtools/samtools)                       | 1.19.2  |    | [seqinr](https://github.com/lbbe-software/seqinr)                       | 4.2-36  |
+| [bcftools](https://github.com/samtools/bcftools)                       | 1.19    |    | [stringr](https://github.com/tidyverse/stringr)                         | 1.5.1   |
+| [bedtools](https://github.com/arq5x/bedtools2)                         | 2.30.0  |    | [purrr](https://github.com/tidyverse/purrr)                             | 1.0.2   |
+| [Racon](https://github.com/lbcb-sci/racon)                             | 1.5.0   |    | [cowplot](https://github.com/wilkelab/cowplot)                          | 1.1.3   |
+| [Medaka](https://github.com/nanoporetech/medaka)                       | 2.0.1   |    | [rmarkdown](https://github.com/rstudio/rmarkdown)                        | 2.29    |
+| [seqtk](https://github.com/lh3/seqtk)                                  | 1.4     |    |                                                                          |
+| [emboss](https://github.com/kimrutherford/EMBOSS)                      | 6.6.0   |    |                                                                          |
+| [muscle3](https://www.drive5.com/muscle/)                              | 3.8.31  |    |                                                                          |
+| [parallel](https://www.gnu.org/software/parallel/sphinx.html)           | 20220122 |   |                                                                          |
+  
 
 ### Input
 
@@ -96,15 +111,17 @@ You can easily run the pipeline on Linux or through a Docker image. Additionally
   1. Clone or download the required [scripts](./Scripts) from the GitHub. Ensure that the following files are present after downloading.
 
 ``` 
+├── scripts
+│   ├── InputFiles.R
+│   ├── Summary.R
+│   ├── Report.Rmd
+│   ├── minibar.py
+│   ├── Construct_Validation_per_sample.sh
+│   ├── Demultiplexing_e_E.sh
+│   └── Summary.sh
 ├── setup.sh
 ├── Install_R_Packages.R
-├── Construct_Validation_per_sample.sh
-├── Demultiplexing_e_E.sh
-├── Summary.sh
-├── minibar.py
-├── InputFiles.R
-├── Summary.R
-└── Report.Rmd
+└── ConstructValidation.sh
 ```
 
   2. Ensure the required [software and R packages](#requirements) are properly installed. A [shell](./Scripts/setup.sh) script is provided for installation.  
