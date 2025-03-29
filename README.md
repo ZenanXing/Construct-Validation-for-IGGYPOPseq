@@ -89,7 +89,7 @@ The `SampleInfo.tsv` file should have the following columns. An example file is 
 
 ### Execution
 
-You can easily run the pipeline on Linux or through a Docker image. Additionally, we provide scripts for performing the analysis on cluster with SLURM.  
+You can run the pipeline on Linux or through a Docker image. Additionally, we provide scripts for performing the analysis on cluster with SLURM.  
 
 ### - Linux
 
