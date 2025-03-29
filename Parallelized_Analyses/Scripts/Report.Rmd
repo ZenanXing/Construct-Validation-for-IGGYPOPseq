@@ -1,0 +1,319 @@
+---
+title: "Constructs Validation for IGGYPOP"
+output: 
+ html_document:
+   code_folding: show
+   toc: true
+   toc_float:
+     collapsed: false
+     smooth_scroll: false
+params:
+  input_dir: ""
+  output_dir: ""
+  aa_validation: ""
+
+---
+<style type="text/css">
+div.main-container {
+  width: 100%;
+  max-width: unset;
+}
+
+body, td {
+   font-size: 18px;
+}
+code.r{
+  font-size: 14px;
+}
+pre {
+  font-size: 14px
+}
+</style>
+
+
+```{r echo = FALSE, message = FALSE, warning = FALSE}
+### Load the required packages
+library(tidyverse)
+library(ggplot2)
+library(cowplot)
+library(openxlsx)
+library(rmarkdown)
+```
+```{r setup, include=FALSE}
+# Accessing the parameters inside R code chunks
+input_dir <- params$input_dir
+output_dir <- params$output_dir
+aa_validation <- as.logical(params$aa_validation) # Convert string to logical
+```
+
+### Summary
+
+```{r echo = FALSE, results = 'asis'}
+## Load the required dataframe
+df_exp <- read.xlsx(paste0(output_dir, "/Analysis_Results/OutputFiles/Summary.xlsx"), sheet = "All_Info")
+
+## completely assembled
+df_complete <- df_exp %>% filter(Assembly_Status != "unassembled")
+
+## correctly assembled
+# nt seq
+df_crct_nt <- df_exp %>% filter(Assembly_Status == "error_free")
+# aa seq
+if (isTRUE(aa_validation)) {
+  df_crct_aa <- df_exp %>% filter(Assembly_Status == "error_free"||!is.na(aaCorrect_medaka_1rd))
+}
+
+
+```
+The basic stats of the sequencing results are listed as follows (Total: `r n_distinct(df_exp$primer_index)` sets; `r n_distinct(df_exp$SampleID)` samples).  
+  +   Completely assembled: `r n_distinct(df_complete$primer_index)` sets; `r n_distinct(df_complete$SampleID)` samples  
+  +   Correctly sequence (nt seq) :  `r n_distinct(df_crct_nt$primer_index)` sets; `r n_distinct(df_crct_nt$SampleID)` samples  
+```{r conditional-display, echo=FALSE}
+
+# Check if aa_validation is TRUE
+if (isTRUE(aa_validation)) {
+  # Calculate distinct counts and display the text
+  n_correct_aa <- n_distinct(df_crct_aa$primer_index)
+  n_silent_mutations <- n_correct_aa - n_distinct(df_crct_nt$primer_index)
+  cat("  +   Correctly sequence (aa seq): ", n_correct_aa, ", ", n_silent_mutations, " of them have silent mutations.\n")
+}
+
+```
+### Complete assemblies vs Number of fragments
+```{r echo = FALSE, results = 'asis'}
+
+df_plot_1 <- df_exp %>% 
+  dplyr::select(primer_index, n_frags) %>% 
+  group_by(n_frags) %>% 
+  dplyr::summarise(total = n_distinct(primer_index)) %>% 
+  mutate(total_lab = total)
+df_plot_2 <- df_complete %>% 
+  dplyr::select(primer_index, n_frags) %>% 
+  group_by(n_frags) %>% 
+  dplyr::summarise(complete = n_distinct(primer_index))
+df_plot <- df_plot_1 %>% 
+  left_join(df_plot_2, by = "n_frags") %>% 
+  replace_na(list(complete = 0)) %>% 
+  mutate(complete_lab = paste0(complete, " (", round(complete/total*100, 1), "%)"))
+
+# table
+#kable(df_plot %>% dplyr::select(n_frags, total, correct), format = "html") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = F)
+
+# plot
+df_anno <- df_plot %>% 
+  dplyr::select(n_frags, total_lab, complete_lab) %>% 
+  gather(key = "Catgry", value = "lab", 2:3) %>% 
+  separate(Catgry, into = c("Catgry", "na")) %>% 
+  dplyr::select(n_frags, Catgry, lab) %>% 
+  unite(n_frags, Catgry, col = "merge", sep = "_")
+df_plot_f <- df_plot %>%
+  dplyr::select(n_frags, total, complete) %>% 
+  gather(key = "Catgry", value = "n_genes", 2:3) %>% 
+  unite(n_frags, Catgry, col = "merge", sep = "_") %>% 
+  left_join(df_anno, by = "merge") %>% 
+  separate(merge, into = c("n_frags", "Catgry"), sep = "_")
+df_plot_f$n_frags <- as.numeric(df_plot_f$n_frags)
+df_plot_f$n_frags <- factor(df_plot_f$n_frags, levels = seq(max(df_plot_f$n_frags), min(df_plot_f$n_frags), -1))
+df_plot_f$Catgry <- factor(df_plot_f$Catgry, levels = c("total", "complete"))
+
+p <- ggplot(df_plot_f, aes(x = n_frags, y = n_genes, fill = Catgry, group = Catgry)) + 
+  geom_bar(stat = "identity", position = position_dodge()) +
+  geom_text(aes(y = n_genes, label = lab, hjust = -0.1), position = position_dodge(width = 0.9), vjust = 0.5, size = 4) +
+  coord_flip() + 
+  xlab("Fragments (n)") +
+  ylab("Constructs (n)") +
+  ylim(0, max(df_plot_f$n_genes) + 5) +
+  scale_fill_manual(values = c("complete" = "#5ce7e4", "total" = "#a1cdcc"), breaks = c("complete", "total"),
+                    labels = c("complete" = "Assembled", "total" = "Total")) +
+  theme_bw() +
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank()) + 
+  theme(axis.text= element_text(size = 16),
+        axis.title = element_text(size = 16),
+        legend.position = "right",
+        legend.title = element_blank(), 
+        legend.text = element_text(size = 16)) + 
+  theme(rect = element_rect(fill = "transparent"),# Make background transparent
+        plot.margin = margin(20, 20, 20, 20, "pt"))
+
+
+```
+
+```{r echo = FALSE, out.width = '100%', fig.align = "center"}
+p
+```
+
+### Error-free sequence vs Number of fragments
+```{r echo = FALSE, results = 'asis'}
+
+df_plot_1 <- df_exp %>% 
+  dplyr::select(primer_index, n_frags) %>% 
+  group_by(n_frags) %>% 
+  dplyr::summarise(total = n_distinct(primer_index), .groups = "drop") %>% 
+  mutate(total_lab = total)
+
+if (isTRUE(aa_validation)) {
+  df_plot_2 <- df_crct_aa
+} else {
+  df_plot_2 <- df_crct_nt
+}
+df_plot_2 <- df_plot_2 %>% 
+  dplyr::select(primer_index, n_frags) %>% 
+  group_by(n_frags) %>% 
+  dplyr::summarise(correct = n_distinct(primer_index))
+df_plot <- df_plot_1 %>% 
+  left_join(df_plot_2, by = "n_frags") %>% 
+  replace_na(list(correct = 0)) %>% 
+  mutate(correct_lab = paste0(correct, " (", round(correct/total*100, 1), "%)"))
+
+# table
+#kable(df_plot %>% dplyr::select(n_frags, total, correct), format = "html") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = F)
+
+# plot
+df_anno <- df_plot %>% 
+  dplyr::select(n_frags, total_lab, correct_lab) %>% 
+  gather(key = "Catgry", value = "lab", 2:3) %>% 
+  separate(Catgry, into = c("Catgry", "na")) %>% 
+  dplyr::select(n_frags, Catgry, lab) %>% 
+  unite(n_frags, Catgry, col = "merge", sep = "_")
+df_plot_f <- df_plot %>%
+  dplyr::select(n_frags, total, correct) %>% 
+  gather(key = "Catgry", value = "n_genes", 2:3) %>% 
+  unite(n_frags, Catgry, col = "merge", sep = "_") %>% 
+  left_join(df_anno, by = "merge") %>% 
+  separate(merge, into = c("n_frags", "Catgry"), sep = "_")
+df_plot_f$n_frags <- as.numeric(df_plot_f$n_frags)
+df_plot_f$n_frags <- factor(df_plot_f$n_frags, levels = seq(max(df_plot_f$n_frags), min(df_plot_f$n_frags), -1))
+df_plot_f$Catgry <- factor(df_plot_f$Catgry, levels = c("total", "correct"))
+
+p <- ggplot(df_plot_f, aes(x = n_frags, y = n_genes, fill = Catgry, group = Catgry)) + 
+  geom_bar(stat = "identity", position = position_dodge()) +
+  geom_text(aes(y = n_genes, label = lab, hjust = -0.1), position = position_dodge(width = 0.9), vjust = 0.5, size = 4) +
+  coord_flip() + 
+  xlab("Fragments (n)") +
+  ylab("Constructs (n)") +
+  ylim(0, max(df_plot_f$n_genes) + 5) +
+  scale_fill_manual(values = c("correct" = "#73EC8B", "total" = "#A4D1A7"), breaks = c("correct", "total"),
+                    labels = c("correct" = "Error Free", "total" = "Total")) +
+  theme_bw() +
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank()) + 
+  theme(axis.text= element_text(size = 16),
+        axis.title = element_text(size = 16),
+        legend.position = "right",
+        legend.title = element_blank(), 
+        legend.text = element_text(size = 16)) + 
+  theme(rect = element_rect(fill = "transparent"),# Make background transparent
+        plot.margin = margin(20, 20, 20, 20, "pt"))
+
+```
+
+```{r echo = FALSE, out.width = '100%', fig.align = "center"}
+p
+```
+
+### Assembly status vs Number of fragments
+```{r echo = FALSE, results = 'asis'}
+
+df_plot <- df_exp %>% 
+  dplyr::select(SampleID, Assembly_Status, n_frags) %>% 
+  group_by(n_frags, Assembly_Status) %>% 
+  dplyr::summarise(n = n_distinct(SampleID), .groups = "drop")
+df_plot$Assembly_Status <- factor(df_plot$Assembly_Status, levels = c("unassembled", "snp_indel", "error_free"))
+df_plot$n_frags <- as.numeric(df_plot$n_frags)
+df_plot$n_frags <- factor(df_plot$n_frags, levels = seq(max(df_plot$n_frags), min(df_plot$n_frags), -1))
+
+
+p <- ggplot(df_plot, aes(x = n_frags, y = n, fill = Assembly_Status, group = Assembly_Status)) + 
+  geom_bar(stat = "identity") +
+  #geom_text(aes(y = n_genes, label = lab, hjust = -0.1), position = position_dodge(width = 0.9), vjust = 0.5, size = 4) +
+  coord_flip() + 
+  xlab("Fragments (n)") +
+  ylab("Clones (n)") +
+  #ylim(0, max(df_plot_f$n_genes) + 5) +
+  scale_fill_manual(name = "Assembly Status", 
+                    breaks = c("error_free", "snp_indel", "unassembled"), 
+                    values = c("error_free" = "#73EC8B", "snp_indel" = "#87A2FF", "unassembled" = "#cdcdcd"),
+                    labels = c("error_free" = "Error Free", "snp_indel" = "SNP/INDEL", "unassembled" = "Unassembled")) +
+  theme_bw() +
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank()) + 
+  theme(axis.text= element_text(size = 16),
+        axis.title = element_text(size = 16),
+        legend.position = "right",
+        legend.title = element_blank(),
+        legend.text = element_text(size = 16)) + 
+  theme(rect = element_rect(fill = "transparent"),# Make background transparent
+        plot.margin = margin(20, 20, 20, 20, "pt"))
+
+```
+
+```{r echo = FALSE, out.width = '100%', fig.align = "center"}
+p
+```
+
+
+### "Successful" Clones per Construct
+```{r echo = FALSE, results = 'asis'}
+
+df_plot_1 <- df_exp %>% 
+  dplyr::select(primer_index, SampleID, Assembly_Status) %>% 
+  group_by(primer_index, Assembly_Status) %>% 
+  dplyr::summarise(n_clones = n_distinct(SampleID), .groups = "drop") %>% 
+  pivot_wider(names_from = Assembly_Status, values_from = n_clones) %>% 
+  mutate(across((ncol(.)-2):ncol(.), ~ replace_na(., 0))) %>% 
+  pivot_longer(cols = 2:4, names_to = "Assembly_Status", values_to = "n_clones") %>% 
+  group_by(Assembly_Status, n_clones) %>% 
+  dplyr::summarise(n_constructs = n(), .groups = "drop") %>% 
+  filter(Assembly_Status == "error_free") %>% 
+  dplyr::select(n_clones, n_constructs) %>% 
+  mutate(Assembly_Status_f = "Error Free")
+
+df_plot_2 <- df_exp %>% 
+  dplyr::select(primer_index, SampleID, Assembly_Status) %>%
+  mutate(Assembly_Status_f = ifelse(Assembly_Status=="unassembled", "Unassembled", "Assembled")) %>% 
+  #drop_na() %>% 
+  dplyr::select(primer_index, SampleID, Assembly_Status_f) %>% 
+  group_by(primer_index, Assembly_Status_f) %>% 
+  dplyr::summarise(n_clones = n_distinct(SampleID), .groups = "drop") %>% 
+  pivot_wider(names_from = Assembly_Status_f, values_from = n_clones) %>% 
+  mutate(across((ncol(.)-1):ncol(.), ~ replace_na(., 0))) %>% 
+  pivot_longer(cols = 2:3, names_to = "Assembly_Status_f", values_to = "n_clones") %>% 
+  group_by(Assembly_Status_f, n_clones) %>% 
+  dplyr::summarise(n_constructs = n(), .groups = "drop") %>% 
+  filter(Assembly_Status_f == "Assembled")
+
+df_plot <- rbind(df_plot_1, df_plot_2)
+
+df_plot$Assembly_Status_f <- factor(df_plot$Assembly_Status_f, levels = c("Assembled", "Error Free"))
+limits <- factor(seq(min(df_plot$n_clones), max(df_plot$n_clones), 1))
+df_plot$n_clones <- as.numeric(df_plot$n_clones)
+df_plot$n_clones <- factor(df_plot$n_clones, levels = seq(min(df_plot$n_clones), max(df_plot$n_clones), 1))
+
+# plot - 400*500
+p <- ggplot(df_plot, aes(x = n_clones, y = n_constructs, fill = Assembly_Status_f)) + 
+  geom_bar(stat = "identity") +
+  #geom_text(aes(y = n_genes, label = lab, hjust = -0.1), position = position_dodge(width = 0.9), vjust = 0.5, size = 4) +
+  scale_x_discrete(limits = limits) + 
+  facet_wrap(.~Assembly_Status_f, ncol = 1, scales = "free_y") +
+  ylab("Constructs (n)") +
+  xlab("Clones/Construct") +
+  #ylim(0, max(df_plot_f$n_genes) + 5) +
+  scale_fill_manual(values = c("Error Free" = "#73EC8B", "Assembled" = "#5ce7e4")) + #b5ff16
+  theme_bw() +
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank()) + 
+  theme(axis.text= element_text(size = 16),
+        axis.title = element_text(size = 16),
+        strip.text = element_text(size = 16),
+        legend.position = "right",
+        legend.title = element_blank(),
+        legend.text = element_text(size = 16)) + 
+  theme(rect = element_rect(fill = "transparent"),# Make background transparent
+        plot.margin = margin(20, 20, 20, 20, "pt"))
+
+```
+
+```{r echo = FALSE, out.width = '100%', fig.align = "center"}
+p
+```
