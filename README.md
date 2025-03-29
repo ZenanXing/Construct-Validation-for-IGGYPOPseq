@@ -115,7 +115,7 @@ You can run the pipeline on Linux or through a Docker image. Additionally, we pr
   
 ```
 # Make the scripts executable
-chmod +x /app/setup.sh /app/ConstructValidation.sh
+chmod +x ./setup.sh ./ConstructValidation.sh
 
 # Create a virtual environment before running the setup script  
 python3 -m venv /opt/venv  
