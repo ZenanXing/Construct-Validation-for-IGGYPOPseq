@@ -8,16 +8,16 @@ output_dir <- args[2]
 aa_validation <- as.logical(args[3])
 
 
-# input_dir <- "/bigdata/cutlerlab/zxing001/GeneAssembly/Manuscript/data/demo/Input"
-# output_dir <- "/bigdata/cutlerlab/zxing001/GeneAssembly/Manuscript/data/demo"
+# input_dir <- "/Users/cutlerlab/Desktop/IGGYPOPseq/Input"
+# output_dir <- "/Users/cutlerlab/Desktop/IGGYPOPseq"
 # aa_validation <- TRUE
 
 
 # Load the required packages ----------------------------------------------
 
 library(tidyverse)
-library(openxlsx)
 library(Biostrings)
+library(openxlsx)
 library(seqinr)
 library(stringr)
 library(purrr)

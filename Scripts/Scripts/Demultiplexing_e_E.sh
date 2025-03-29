@@ -1,40 +1,25 @@
 #!/bin/bash
-#SBATCH --nodes=1
-#SBATCH --ntasks=1
-#SBATCH --cpus-per-task=2     # This will be the number of CPUs per individual array job
-#SBATCH --mem=20G     # This will be the memory per individual array job
-#SBATCH --time=0-06:00:00     # 4 hrs
-#SBATCH --job-name="demtplx_para_test"
 
 ## Set variables
 SCRIPT_DIR=$1
 INPUT_DIR=$2
 OUTPUT_DIR=$3
 q_Chopper=$4
-# Specify the path to the config file
-config=$OUTPUT_DIR/Analysis_Results/Demultiplexing/config.txt
-# Extract the e for the current $SLURM_ARRAY_TASK_ID
-i=$(awk -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$1==ArrayTaskID {print $2}' $config)
-# Extract the E for the current $SLURM_ARRAY_TASK_ID
-j=$(awk -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$1==ArrayTaskID {print $3}' $config)
-
-# Load modules
-module load minimap2 samtools bedtools parallel # Alignment & Assembly
+ARRAY_TASK_ID=$5
+i=$6
+j=$7
 
 ## Create required folders
-mkdir -p $OUTPUT_DIR/Analysis_Results/Demultiplexing/$SLURM_ARRAY_TASK_ID/{rawReads,filteredReads,tempMapping}
-mkdir -p $OUTPUT_DIR/Analysis_Results/Demultiplexing/$SLURM_ARRAY_TASK_ID/tempMapping/{sam,bam,sorted_bam}
+mkdir -p $OUTPUT_DIR/Analysis_Results/Demultiplexing/$ARRAY_TASK_ID/{rawReads,filteredReads,tempMapping}
+mkdir -p $OUTPUT_DIR/Analysis_Results/Demultiplexing/$ARRAY_TASK_ID/tempMapping/{sam,bam,sorted_bam}
 
 ## Demultiplexing
-cd $OUTPUT_DIR/Analysis_Results/Demultiplexing/$SLURM_ARRAY_TASK_ID/rawReads
+cd $OUTPUT_DIR/Analysis_Results/Demultiplexing/$ARRAY_TASK_ID/rawReads
 chmod 775 $SCRIPT_DIR/minibar.py
 $SCRIPT_DIR/minibar.py $OUTPUT_DIR/Analysis_Results/InputFiles/IndexCombination.txt $INPUT_DIR/passed_all.fastq -e $i -E $j -T -F -P ""
 
 ## Filtering with chopper
 # Create the chopper_env using conda
-conda init
-source ~/bigdata/.conda/envs/chopper_env/bin/chopper
-conda activate chopper_env
 parallel 'chopper -q '$q_Chopper' -i {} > ../filteredReads/{.}_filtered.fastq' ::: ./*.fastq
 cd ..
 ## Export the results for demultiplexing -  count the number of reads after demultiplexing
@@ -83,6 +68,6 @@ Samples_MeanDepth_20=$(awk -F '\t' 'NR>1 && $4>=20 {print $1}' temp_align.tsv | 
 ### Export the value of all variables to the .tsv file
 echo -e "$i\t$j\t$Multi\t$Unknown\t$Sorted\t$TotalDmtplx\t$Sorted_pct\t$TotalMapped\t$Mapped_pct\t$TotalSamples\t$TotalCompleteAssembledSamples\t$TotalSets\t$TotalCompleteAssembledSets\t$Sets_MeanDepth_5\t$Samples_MeanDepth_5\t$Sets_MeanDepth_10\t$Samples_MeanDepth_10\t$Sets_MeanDepth_15\t$Samples_MeanDepth_15\t$Sets_MeanDepth_20\t$Samples_MeanDepth_20" >> $OUTPUT_DIR/Analysis_Results/Demultiplexing/e_n_E_Combination.tsv
 
-rm -rf $OUTPUT_DIR/Analysis_Results/Demultiplexing/$SLURM_ARRAY_TASK_ID
+rm -rf $OUTPUT_DIR/Analysis_Results/Demultiplexing/$ARRAY_TASK_ID
 
 

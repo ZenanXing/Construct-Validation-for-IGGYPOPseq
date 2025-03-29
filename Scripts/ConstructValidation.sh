@@ -1,11 +1,4 @@
-#!/bin/bash -l
-
-#SBATCH --nodes=1
-#SBATCH --ntasks=1
-#SBATCH --cpus-per-task=10
-#SBATCH --mem=20G
-#SBATCH --time=0-6:00:00
-#SBATCH -p intel # This is the default partition, you can use any of the following; intel, batch, highmem, gpu
+#!/bin/bash
 
 ### Define options
 # Define the default values
@@ -73,22 +66,12 @@ if [[ -z "$INPUT_DIR" || -z "$OUTPUT_DIR" ]]; then
     usage
 fi
 
-### Load the required modules
-module load parallel # Run the code in parallel
-module load minimap2 samtools bedtools # Alignment & Assembly
-module load seqtk # Polishing
-module load bcftools # Variant Calling
-module load emboss # Variant Identification
-module load muscle/3.8.31 # Pairwise Alignment
-
 ### Making directory structure
 mkdir -p $OUTPUT_DIR/Analysis_Results/{Demultiplexing,VariantCalling/{beforePolishing,afterPolishing},Alignment,Assembly,PairwiseAlignment,InputFiles/references,OutputFiles/ntAlignment}
 mkdir -p $OUTPUT_DIR/Analysis_Results/Assembly/{bedtools/{sam,bed},racon/{1rd,2rd,3rd,sam},medaka/1rd}
 mkdir -p $OUTPUT_DIR/Analysis_Results/VariantCalling/afterPolishing/{racon/{1rd,2rd,3rd},medaka_1rd}
 mkdir -p $OUTPUT_DIR/Analysis_Results/PairwiseAlignment/combined_fasta
 
-### Set the working directory
-cd $OUTPUT_DIR/Analysis_Results
 
 ### Generate InputFiles
 chmod 775 $SCRIPT_DIR/InputFiles.R
@@ -100,57 +83,45 @@ if $AA_Validation; then
     parallel --jobs 100 --colsep '\t' "getorf -sequence ${OUTPUT_DIR}/Analysis_Results/InputFiles/references/{1}.fasta -outseq ${OUTPUT_DIR}/Analysis_Results/VariantIdentification/ReferenceORFs/{1}_orf.fasta -minsize {2} -find 1 -reverse N" :::: <(tail -n +2 "$OUTPUT_DIR/Analysis_Results/InputFiles/references_info.tsv")
 fi
 
+### Set the working directory
+cd $OUTPUT_DIR/Analysis_Results
+
 ### Demultiplexing
 
 cd $OUTPUT_DIR/Analysis_Results/Demultiplexing
 chmod 775 $SCRIPT_DIR/minibar.py
 
-
 if $OPTIMIZE_eE; then
-    ## Get the edit distance between the most similar barcodes and primers (smallest edit distance), and store the numbers in e and E.
+    ## Get the edit distance between the most similar barcodes and primers (smallest edit distance).
     # edit distance of closest primers
-    edP=$($SCRIPT_DIR/minibar.py ../InputFiles/IndexCombination.txt -info primer | grep -o 'edit distance [0-9]*' | awk '{print $3}')
+    edP=$($SCRIPT_DIR/minibar.py $OUTPUT_DIR/Analysis_Results/InputFiles/IndexCombination.txt -info primer | grep -o 'edit distance [0-9]*' | awk '{print $3}')
     # length of the primers
     maxP=$($SCRIPT_DIR/minibar.py $OUTPUT_DIR/Analysis_Results/InputFiles/IndexCombination.txt -info primer | grep -oP 'with lengths of \K[0-9]+')
     # edit distance of closest barcodes
-    edB=$($SCRIPT_DIR/minibar.py ../InputFiles/IndexCombination.txt -info both | grep -o 'edit distance of [0-9]*' | awk '{print $4}')
-    # Create the config file contains all the combinations
-    echo -e "ArrayTaskID\te\tE" > config.txt
-    ArrayTaskID=0
-    for e in $(seq 1 $edB); do
-      for E in $(seq 1 $maxP); do
-        ArrayTaskID=$((ArrayTaskID+1))
-        # Append each combination along with ArrayTaskID to the file
-        echo -e "$ArrayTaskID\t$e\t$E" >> config.txt
+    edB=$($SCRIPT_DIR/minibar.py $OUTPUT_DIR/Analysis_Results/InputFiles/IndexCombination.txt -info both | grep -o 'edit distance of [0-9]*' | awk '{print $4}')
+    
+    ## Apply all possible combinations of e & E
+    echo -e "e\tE\tMulti\tUnknown\tSorted\tTotalDmtplx\tSorted_pct\tTotalMapped\tMapped_pct\tTotalSamples\tTotalCompleteAssembledSamples\tTotalSets\tTotalCompleteAssembledSets\tSets_MeanDepth_5\tSamples_MeanDepth_5\tSets_MeanDepth_10\tSamples_MeanDepth_10\tSets_MeanDepth_15\tSamples_MeanDepth_15\tSets_MeanDepth_20\tSamples_MeanDepth_20" > e_n_E_Combination.tsv
+    ARRAY_TASK_ID=0
+    for i in $(seq 1 $edB); do
+      for j in $(seq 1 $maxP); do
+        ARRAY_TASK_ID=$((ARRAY_TASK_ID+1))
+        chmod 775 $SCRIPT_DIR/Demultiplexing_e_E.sh
+        $SCRIPT_DIR/Demultiplexing_e_E.sh "$SCRIPT_DIR" "$INPUT_DIR" "$OUTPUT_DIR" "$q_Chopper" "$ARRAY_TASK_ID" "$i" "$j"
       done
     done
-    # Create a file contains all the results
-    echo -e "e\tE\tMulti\tUnknown\tSorted\tTotalDmtplx\tSorted_pct\tTotalMapped\tMapped_pct\tTotalSamples\tTotalCompleteAssembledSamples\tTotalSets\tTotalCompleteAssembledSets\tSets_MeanDepth_5\tSamples_MeanDepth_5\tSets_MeanDepth_10\tSamples_MeanDepth_10\tSets_MeanDepth_15\tSamples_MeanDepth_15\tSets_MeanDepth_20\tSamples_MeanDepth_20" > e_n_E_Combination.tsv
-    # Run the job array script
-    conda init
-    source ~/bigdata/.conda/envs/chopper_env/bin/chopper
-    conda activate chopper_env
-    chmod 775 $SCRIPT_DIR/Demultiplexing_e_E.sh
-    job_id=$(sbatch --wait --array=1-$ArrayTaskID $SCRIPT_DIR/Demultiplexing_e_E.sh "$SCRIPT_DIR" "$INPUT_DIR" "$OUTPUT_DIR" "$q_Chopper")
-    job_id_f=$(echo $job_id | awk '{print $4}')
-    ## Export the log file
-    sacct --jobs=$job_id_f --format=JobID,JobName,Start,End,Elapsed | awk '{$1=$1; print}' OFS='\t' > log_dmtplx.tsv
-    
-    ## Remove all the log files
-    rm -rf *.out
-    
+
     ## Extract the best combination of e & E
-    # Step 1: Sort the TSV file by  TotalMapped and then TotalSets(both descending) and get the top row
+    # Step 1: Sort the TSV file by TotalMapped and then TotalSets (descending) and get the top row
     top_row=$(sort -t$'\t' -k19,19nr -k8,8nr e_n_E_Combination.tsv | head -n 1)
     # Step 2: Extract the e and E columns from the top row
     e_slt=$(echo "$top_row" | cut -f1)
     E_slt=$(echo "$top_row" | cut -f2)
-    
 
 else
+    # If not optimizing, use predefined e and E values
     e_slt="$e_Pro"
     E_slt="$E_Pro"
-
 fi
 
 
@@ -160,28 +131,28 @@ cd final
 $SCRIPT_DIR/minibar.py ../../InputFiles/IndexCombination.txt $INPUT_DIR/passed_all.fastq -e $e_slt -E $E_slt -T -F -P ""
 
 ## Filtering with chopper
-# Create the chopper_env using conda
-#conda create -n chopper_env -c conda-forge -c bioconda chopper
-conda activate chopper_env
+#conda init
+#conda activate chopper_env
 parallel 'chopper -q '$q_Chopper' -i {} > {.}_filtered.fastq' ::: *.fastq
-conda deactivate
+#conda deactivate
 
 ### Run analysis for individual samples
+
 cd $OUTPUT_DIR/Analysis_Results
+config=$OUTPUT_DIR/Analysis_Results/InputFiles/config_sample.txt
 maxArrayid=$(awk 'NR > 1 { if ($1 > max) max = $1 } END { print max }' "$OUTPUT_DIR/Analysis_Results/InputFiles/config_sample.txt")
 chmod 775 $SCRIPT_DIR/Construct_Validation_per_Sample.sh
-module load medaka
-job_id=$(sbatch --wait --array=1-$maxArrayid $SCRIPT_DIR/Construct_Validation_per_Sample.sh "$SCRIPT_DIR" "$INPUT_DIR" "$OUTPUT_DIR" "$AA_Validation" "$Medaka_Mod")
-job_id_f=$(echo $job_id | awk '{print $4}')
-## Export the log file
-sacct --jobs=$job_id_f --format=JobID,JobName,Start,End,Elapsed | awk '{$1=$1; print}' OFS='\t' > log_analysis.tsv
-## Remove all the log files
-rm -rf *.out
+for ArrayTaskID in $(seq 1 $maxArrayid); do 
+  # SampleID
+  SampleID=$(awk -v ArrayTaskID=$ArrayTaskID '$1==ArrayTaskID {print $2}' $config)
+  # ReferenceName
+  Reference=$(awk -v ArrayTaskID=$ArrayTaskID '$1==ArrayTaskID {print $3}' $config)
+  # Run the script
+  $SCRIPT_DIR/Construct_Validation_per_Sample.sh "$SCRIPT_DIR" "$INPUT_DIR" "$OUTPUT_DIR" "$AA_Validation" "$Medaka_Mod" "$SampleID" "$Reference"
+done
 
 ## Run the Summary.sh
 cd $OUTPUT_DIR/Analysis_Results
 chmod 775 $SCRIPT_DIR/Summary.sh
-job_id=$(sbatch --wait $SCRIPT_DIR/Summary.sh "$SCRIPT_DIR" "$INPUT_DIR" "$OUTPUT_DIR" "$AA_Validation")
+$SCRIPT_DIR/Summary.sh "$SCRIPT_DIR" "$INPUT_DIR" "$OUTPUT_DIR" "$AA_Validation"
 
-## Remove all the log files
-rm -rf *.out

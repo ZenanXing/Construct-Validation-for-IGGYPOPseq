@@ -1,10 +1,4 @@
 #!/bin/bash
-#SBATCH --nodes=1
-#SBATCH --ntasks=1
-#SBATCH --cpus-per-task=2     # This will be the number of CPUs per individual array job
-#SBATCH --mem=20G     # This will be the memory per individual array job
-#SBATCH --time=0-04:00:00     # 1 hrs
-#SBATCH --job-name="analysis"
 
 # Set variables
 SCRIPT_DIR=$1
@@ -12,22 +6,8 @@ INPUT_DIR=$2
 OUTPUT_DIR=$3
 AA_Validation=$4
 Medaka_Mod=$5
-
-# Specify the path to the config file
-config=$OUTPUT_DIR/Analysis_Results/InputFiles/config_sample.txt
-
-# SampleID
-SampleID=$(awk -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$1==ArrayTaskID {print $2}' $config)
-# ReferenceName
-Reference=$(awk -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$1==ArrayTaskID {print $3}' $config)
-
-### Load the required modules
-module load parallel # Run the code in parallel
-module load minimap2 samtools bedtools # Alignment & Assembly
-module load seqtk # Polishing
-module load bcftools # Variant Calling
-module load emboss # Variant Identification
-module load muscle/3.8.31 # Pairwise Alignment
+SampleID=$6
+Reference=$7
 
 ### Alignment
 ## Change the directory and create required directory:
@@ -55,7 +35,6 @@ samtools consensus -a -A -f fasta --show-ins no --show-del yes -o ./bedtools/sam
 bedtools maskfasta -fi ./bedtools/sam/${SampleID}_sam.fasta -fo ./bedtools/bed/${SampleID}_draft.fasta -bed ../VariantCalling/beforePolishing/${SampleID}_bP.vcf
 
 ### Polishing by Racon
-module load racon
 ## racon polishing - 1rd
 minimap2 -ax map-ont ./bedtools/bed/${SampleID}_draft.fasta ../Demultiplexing/final/${SampleID}_filtered.fastq > ./racon/sam/${SampleID}_racon_1rd.sam
 racon -m 8 -x -6 -g -8 -w 500 ../Demultiplexing/final/${SampleID}_filtered.fastq ./racon/sam/${SampleID}_racon_1rd.sam ./bedtools/bed/${SampleID}_draft.fasta > ./racon/1rd/${SampleID}_racon_1rd.fasta
@@ -69,12 +48,11 @@ minimap2 -ax map-ont ./racon/2rd/${SampleID}_racon_2rd.fasta ../Demultiplexing/f
 racon -m 8 -x -6 -g -8 -w 500 ../Demultiplexing/final/${SampleID}_filtered.fastq ./racon/sam/${SampleID}_racon_3rd.sam ./racon/2rd/${SampleID}_racon_2rd.fasta > ./racon/3rd/${SampleID}_racon_3rd.fasta
 
 ### Polishing with medaka
-conda init
-source ~/bigdata/.conda/envs/chopper_env/bin/chopper
 
-module load medaka
 ## 1rd
-medaka_consensus -f -x -i ../Demultiplexing/final/${SampleID}_filtered.fastq -d ./racon/3rd/${SampleID}_racon_3rd.fasta -o ./medaka/1rd/${SampleID} -m ${Medaka_Mod}; mv ./medaka/1rd/${SampleID}/consensus.fasta ./medaka/1rd/${SampleID}_medaka_1rd.fasta
+# mkdir -p ./medaka/1rd/${SampleID} 
+medaka_consensus -f -x -i ../Demultiplexing/final/${SampleID}_filtered.fastq -d ./racon/3rd/${SampleID}_racon_3rd.fasta -o ./medaka/1rd/${SampleID} -m ${Medaka_Mod} -t 6
+mv ./medaka/1rd/${SampleID}/consensus.fasta ./medaka/1rd/${SampleID}_medaka_1rd.fasta
 
 ## Further processing the resulting fasta files so we can process the fasta files in the multiple alignments
 ## Change the header of polished fasta files and saved it in a new fasta files
@@ -94,7 +72,6 @@ awk -v new_header="${SampleID}_medaka_1rd" 'BEGIN {OFS = FS} NR == 1 {sub(/^>[^ 
 
 ### Variant Calling 
 cd $OUTPUT_DIR/Analysis_Results/VariantCalling
-module load medaka
 ## after racon polishing
 # 1st round
 medaka tools consensus2vcf --mode NW --out_prefix ./afterPolishing/racon/1rd/${SampleID}_racon_1rd ../Assembly/racon/1rd/${SampleID}_racon_1rd.fasta ../InputFiles/references/${Reference}.fasta
@@ -154,7 +131,8 @@ if $AA_Validation; then
     sed "s/N//g; s/\*//g" ../Assembly/medaka/1rd/${SampleID}_medaka_1rd_f.fasta | getorf -sequence stdin -outseq ./AssembledORFs/allORFs/${SampleID}/${SampleID}_medaka_1rd_all_orf.fasta -minsize 3 -find 1 -reverse N
 
     ## Find the ORFs with the smallest start site:
-    find ./AssembledORFs/allORFs/${SampleID}/ -name '*.fasta' | parallel --jobs 4 'awk '\''/^>/ {header = $0; match($0, /\[([0-9]+)/, m); start = m[1]; if (min_start == "" || start < min_start) {min_start = start; min_header = header; min_seq = "";}} /^[^>]/ {if (start == min_start) {min_seq = min_seq $0;}} END {output_file = "./AssembledORFs/selectedORF/" substr(FILENAME, length("./AssembledORFs/allORFs/") + 1); sub("_all_orf.fasta", "_orf.fasta", output_file); min_header = gensub(/_[0-9]+( \[.*\])/, "\\1", "1", min_header); print min_header "\n" min_seq > output_file;}'\'' {}'
+#    find ./AssembledORFs/allORFs/${SampleID}/ -name '*.fasta' | parallel --jobs 4 'awk '\''/^>/ {header = $0; match($0, /\[([0-9]+)/, m); start = m[1]; if (min_start == "" || start < min_start) {min_start = start; min_header = header; min_seq = "";}} /^[^>]/ {if (start == min_start) {min_seq = min_seq $0;}} END {output_file = "./AssembledORFs/selectedORF/" substr(FILENAME, length("./AssembledORFs/allORFs/") + 1); sub("_all_orf.fasta", "_orf.fasta", output_file); min_header = gensub(/_[0-9]+( \[.*\])/, "\\1", "1", min_header); print min_header "\n" min_seq > output_file;}'\'' {}'
+    find ./AssembledORFs/allORFs/${SampleID}/ -name '*.fasta' | parallel --jobs 4 'awk '\''/^>/ {header = $0; match($0, /\[([0-9]+)/, m); start = m[1]; if (min_start == "" || start < min_start) {min_start = start; min_header = header; min_seq = "";}} /^[^>]/ {if (start == min_start) {min_seq = min_seq $0;}} END {output_file = "./AssembledORFs/selectedORF/" substr(FILENAME, length("./AssembledORFs/allORFs/") + 1); sub("_all_orf.fasta", "_orf.fasta", output_file); min_header = gensub(/_[0-9]+( \\[.*\\])/, "\\1", "1", min_header); print min_header "\n" min_seq > output_file;}'\'' {}'
     
     ## Protein sequences alignment to see if it is a missense mutation
     

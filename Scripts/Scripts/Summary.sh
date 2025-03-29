@@ -1,9 +1,4 @@
 #!/bin/bash
-#SBATCH --nodes=1
-#SBATCH --ntasks=1
-#SBATCH --cpus-per-task=2     # This will be the number of CPUs per individual array job
-#SBATCH --mem=10G     # This will be the memory per individual array job
-#SBATCH --time=0-02:00:00     # 20 minutes
 
 ## Set variables
 SCRIPT_DIR=$1
@@ -14,17 +9,13 @@ AA_Validation=$4
 ### Change the directory
 cd $OUTPUT_DIR/Analysis_Results
 
-### Load the required modules
-module load parallel samtools seqtk bcftools
-module load muscle/3.8.31 # Pairwise Alignment
-
 ### Demultiplexing -  count the number of reads after demultiplexing
 # Create or overwrite the TSV file with the header
 echo -e "FileName\tReads" > OutputFiles/Demultiplexing_ReadsSummary.tsv
 # Use GNU Parallel to process each FASTQ file
-parallel 'echo -e {/}"\t"$(cat {} | wc -l | awk "{{print int(\$1/4)}}")' ::: ./Demultiplexing/final/*_filtered.fastq | sort >> OutputFiles/Demultiplexing_ReadsSummary.tsv
+parallel 'echo {/}"\t"$(($(wc -l < {}) / 4))' ::: ./Demultiplexing/final/*_filtered.fastq | sort >> OutputFiles/Demultiplexing_ReadsSummary.tsv
 
-
+apt-get install pandoc
 ### Alignment
 ## Export alignment results using samtools:
 echo -e "FileName\tReference\tStart\tEnd\tReads_Mapped\tCovered_Bases\tCoverage_Percentage\tMean_Depth\tMean_Base_Quality\tMean_Mapping_Quality" > OutputFiles/Alignment.tsv # Print the header (adjust according to the samtools coverage output)
@@ -95,25 +86,27 @@ parallel 'bname=$(basename {} _medaka_1rd.all.vcf); bcftools query -f "%CHROM\t%
 ### Pairwise alignment - nt
 # Initialize the TSV file with headers
 echo -e "SampleID\tPolishingStep\tIdentity_nt" > OutputFiles/ntAlignment.tsv
-# Function to process each file
-process_file() {
-    file="$1"
-    # Extract SampleName
-    sample_name=$(basename "$file" | sed 's/_nt_align_emboss.txt//')
-
-    # Loop through polishing steps
-    for step in sam draft racon_1rd racon_2rd racon_3rd medaka_1rd; do
-        polishing_step=$(grep -oP "\# 2\:.*_\K${step}" "$file")
-        identity=$(awk "/${step}/{flag=1} flag" "$file" | grep -m 1 -oP '# Identity:\s+\K.*')
-        # Append the extracted information to the TSV file
-        if [[ -n "$sample_name" && -n "$polishing_step" && -n "$identity" ]]; then
-            echo -e "$sample_name\t$polishing_step\t$identity" >> OutputFiles/ntAlignment.tsv
-        fi
-    done
-}
-export -f process_file
-# Run in parallel
-parallel -j 100 "process_file {}" ::: OutputFiles/ntAlignment/*_emboss.txt
+parallel -j 100 --no-notice "
+    process_file() {
+        file=\$1
+        echo \"Processing file: \$file\"  # Print the current file being processed
+        # Extract SampleName - only remove the known suffix
+        sample_name=\$(basename \"\$file\" | sed -E 's/_nt_align_emboss.txt\$//')
+        # Loop through polishing steps
+        for step in sam draft racon_1rd racon_2rd racon_3rd medaka_1rd; do
+            polishing_step=\$(grep -oP \"\\# 2\\:.*_\\K\${step}\" \"\$file\")
+            identity=\$(awk \"/\${step}/{flag=1} flag\" \"\$file\" | grep -m 1 -oP '# Identity:\\s+\\K.*')
+            # Append the extracted information to the TSV file
+            if [ -n \"\$sample_name\" ] && [ -n \"\$polishing_step\" ] && [ -n \"\$identity\" ]; then
+                # Use echo without -e to prevent unwanted characters
+                echo \"\$sample_name\t\$polishing_step\t\$identity\" >> OutputFiles/ntAlignment.tsv
+            else
+                echo \"Warning: Some data not found for file: \$file step: \$step\"  # Log missing data
+            fi
+        done
+    }
+    process_file {}
+" ::: OutputFiles/ntAlignment/*_emboss.txt
 
 ### Visualization of the pairwise alignment - nt - samplewise
 cd $OUTPUT_DIR/Analysis_Results/PairwiseAlignment
@@ -129,25 +122,27 @@ cd ..
 if $AA_Validation; then
     # Initialize the TSV file with headers
     echo -e "SampleID\tPolishingStep\tIdentity_aa" > OutputFiles/aaAlignment.tsv
-    # Function to process each file
+    parallel -j 100 --no-notice "
     process_file() {
-        file="$1"
-        # Extract SampleName
-        sample_name=$(basename "$file" | sed 's/_aa_align_emboss.txt//')
-    
+        file=\$1
+        echo \"Processing file: \$file\"  # Print the current file being processed
+        # Extract SampleName - only remove the known suffix
+        sample_name=\$(basename \"\$file\" | sed -E 's/_aa_align_emboss.txt\$//')
         # Loop through polishing steps
         for step in sam draft racon_1rd racon_2rd racon_3rd medaka_1rd; do
-            polishing_step=$(grep -oP "\# 2\:.*_\K${step}" "$file")
-            identity=$(awk "/${step}/{flag=1} flag" "$file" | grep -m 1 -oP '# Identity:\s+\K.*')
+            polishing_step=\$(grep -oP \"\\# 2\\:.*_\\K\${step}\" \"\$file\")
+            identity=\$(awk \"/\${step}/{flag=1} flag\" \"\$file\" | grep -m 1 -oP '# Identity:\\s+\\K.*')
             # Append the extracted information to the TSV file
-            if [[ -n "$sample_name" && -n "$polishing_step" && -n "$identity" ]]; then
-                echo -e "$sample_name\t$polishing_step\t$identity" >> OutputFiles/aaAlignment.tsv
+            if [ -n \"\$sample_name\" ] && [ -n \"\$polishing_step\" ] && [ -n \"\$identity\" ]; then
+                # Use echo without -e to prevent unwanted characters
+                echo \"\$sample_name\t\$polishing_step\t\$identity\" >> OutputFiles/aaAlignment.tsv
+            else
+                echo \"Warning: Some data not found for file: \$file step: \$step\"  # Log missing data
             fi
         done
     }
-    export -f process_file
-    # Run in parallel
-    parallel -j 100 "process_file {}" ::: OutputFiles/aaAlignment/*_emboss.txt
+    process_file {}
+    " ::: OutputFiles/aaAlignment/*_emboss.txt
     
     # Export the length of ORFs
     # Reference
