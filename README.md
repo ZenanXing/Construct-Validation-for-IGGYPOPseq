@@ -89,7 +89,7 @@ The `SampleInfo.tsv` file should have the following columns. An example file is 
 
 ### Execution
 
-You can easily run the pipeline on Linux or through a Docker image. Additionally, we provide scripts for performing the analysis on cluster with SLURM. These scripts allow for parallel analysis of all samples, making the process significantly more convenient and efficient.  
+You can easily run the pipeline on Linux or through a Docker image. Additionally, we provide scripts for performing the analysis on cluster with SLURM.  
 
 ### - Linux
 
@@ -221,6 +221,8 @@ The default values of the `q_chopper`, `e`, `E` and `medaka_model` are optimized
 [(Back to top)](#construct-validation-for-iggypop)
 
 ### - Parallelized analyses with SLURM
+  
+   The following scripts allow for parallel analysis of all samples.
 
   1. Download the required [scripts](./Parallelized_Analyses) from the GitHub. Ensure that the following files are present within their respective folders after downloading.  
 
