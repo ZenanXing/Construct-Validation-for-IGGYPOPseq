@@ -40,7 +40,7 @@
 | Attention_PossibleHetSites | bool | Indicates if the sample has possible heterozygous sites. |
 | Assembly_Status | string | The status of the assembly: it can be error-free (error-free), partially assembled (unassembled), or contain SNPs or INDELs (snp_indel). |  
 
-[Back to README](./README.md)
+[Back to README](https://github.com/ZenanXing/Construct-Validation-for-IGGYPOPseq?tab=readme-ov-file#output)
 
 ### Description of exported files
 
@@ -140,4 +140,4 @@ Output files may be aggregated including information after each step for all sam
 | Summary | Report | ./OutputFiles/Summary.xlsx | Stats of results obtained from all steps across all samples. | aggregated |
 | Summary | Report | ./OutputFiles/Report.html | Report for all samples. | aggregated |  
 
-[Back to README](./README.md)
+[Back to README](https://github.com/ZenanXing/Construct-Validation-for-IGGYPOPseq?tab=readme-ov-file#output)
