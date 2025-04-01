@@ -1,6 +1,6 @@
 ########################################
 # Program: needle
-# Rundate: Wed 12 Feb 2025 16:31:48
+# Rundate: Tue  1 Apr 2025 15:12:54
 # Commandline: needle
 #    -asequence ReferenceORFs/Cc04_g05340_orf.fasta
 #    -bsequence ./AssembledORFs/combinedORFs/set191_5_comb.fasta

@@ -21,7 +21,7 @@
 | CompleteAssembled | bool | Indicates whether the assembly is complete, with matched bases exceeding 95%. |
 | Pro_Identity_{*} | fraction | The number of matched amino acids in the sequence at each step. |
 | Pro_Identity_pct_{*} | float | The percentage of matched amino acids in the sequence at each step. |
-| RefORFlength_{*} | int | The length of ORF of the reference sequence (only valid when the input sequence is CDS). |
+| RefORFlength | int | The length of ORF of the reference sequence (only valid when the input sequence is CDS). |
 | ORFlength_{*} | int | The length of ORF of assembled sequence at each step (only valid when the input sequence is CDS). |
 | aaCorrect_{*} | bool | Indicate if the amino acid sequence is identical to the reference sequence at each step (only valid when the input sequence is CDS). |
 | aaSameLength_{*} | bool | Indicate if the length of amino acid sequence is the same as the reference sequence (only valid when the input sequence is CDS). |

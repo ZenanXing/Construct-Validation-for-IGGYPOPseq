@@ -8,16 +8,11 @@ output_dir <- args[2]
 aa_validation <- as.logical(args[3])
 
 
-# input_dir <- "/bigdata/cutlerlab/zxing001/GeneAssembly/Manuscript/data/demo/Input"
-# output_dir <- "/bigdata/cutlerlab/zxing001/GeneAssembly/Manuscript/data/demo"
-# aa_validation <- TRUE
-
-
 # Load the required packages ----------------------------------------------
 
 library(tidyverse)
-library(Biostrings)
 library(openxlsx)
+library(Biostrings)
 library(seqinr)
 library(stringr)
 library(purrr)
@@ -137,12 +132,13 @@ if (isTRUE(aa_validation)) {
            Pro_length = as.numeric(gsub("([0-9]+)\\/([0-9]+)", "\\2", Pro_Identity))) %>% 
     mutate(aaCorrect = ifelse(Pro_matched == Pro_length, "Y", NA),
            aaSameLength = ifelse(RefORFlength == ORFlength, "Y", NA)) %>% 
-    dplyr::select(comb, Pro_Identity, Pro_Identity_pct, RefORFlength, ORFlength, aaCorrect, aaSameLength) %>% 
+    dplyr::select(comb, Pro_Identity, Pro_Identity_pct, ORFlength, aaCorrect, aaSameLength) %>% 
     full_join(df_vc, by = "comb") %>% 
     separate(comb, into = c("SampleID", "PolishingStep"), sep = "--") %>% 
     mutate(missenseMutation = ifelse(is.na(aaCorrect)&aaSameLength=="Y"&Variant=="SNP", "Y", NA)) %>% 
-    pivot_wider(names_from = PolishingStep, values_from = 3:10) %>% 
-    arrange(SampleID)
+    pivot_wider(names_from = PolishingStep, values_from = 3:9) %>% 
+    arrange(SampleID) %>% 
+    full_join(df_ref_orf_length, by = "SampleID")
   df_mutid_misss <- df_mutid %>% 
     filter(missenseMutation_medaka_1rd == "Y") %>% 
     left_join(read.table(paste0(input_dir, "/SampleInfo.tsv"), header = TRUE) %>% dplyr::select(SampleID, Reference), by = "SampleID")
