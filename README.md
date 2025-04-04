@@ -39,7 +39,7 @@ The results of the analysis are recorded in the "Summary_by_gene" sheet within t
 
 ## Getting Started
 
-To run the shell script properly, please ensure that you provide the input files with the correct format and contains the requried information. We have included a demo input files as an example, which you can download for reference. The detailed tutorial for interpreting the results got from the demo dataset is available [here](./Tutorial.pdf). 
+To run the shell script properly, please ensure that you provide the input files with the correct format and contains the requried information. We have included a [demo](./Input/demo) input files as an example, which you can download for reference. 
 
 ### Requirements
 
@@ -71,7 +71,7 @@ Input
 └── passed_all.fastq
 ```
   
-The `SampleInfo.tsv` file should have the following columns. An example file is available [here](./demo/Input/SampleInfo.tsv).  
+The `SampleInfo.tsv` file should have the following columns. An example file is available [here](./Input/demo/SampleInfo.tsv).  
   
 | Parameter name  | Type | Description |
 |-----------------|------|-------------|
@@ -183,8 +183,8 @@ docker build --platform linux/amd64 -t iggypopseq .
 ## Step 3: Start an interactive Docker container  
 # 1. Replace <name_of_your_analysis> with your chosen container name (e.g., iggypop_test).  
 # 2. Mount your input and output directories from your computer to the container:  
-#    - Replace <Input_DIR> with the path to the folder containing your input sequences (e.g., ~/Input).  
-#    - Replace <Output_DIR> with the path to the folder where output will be stored (e.g., ~/Output).  
+#    - Replace <Input_DIR> with the path to the folder containing your input sequences.  
+#    - Replace <Output_DIR> with the path to the folder where output will be stored.  
 # Note: Ensure that both the Input and Output folders exist on your computer before running this command.  
 docker run -it \
   --platform linux/amd64 \
@@ -192,11 +192,23 @@ docker run -it \
   -v <Input_DIR>:/app/input \
   -v <Output_DIR>:/app/output \
   iggypopseq
+e.g. Command line to analyze the demo data:
+docker run -it \
+  --platform linux/amd64 \
+  --name demo \
+  -v ./Input/demo:/app/input \
+  -v ./Output:/app/output \
+  iggypopseq
 
 ## Step 4: Within the bash shell, run the ConstructValidation.sh script  
 # Execute the script with the following command, replacing [options] as needed:
 ./ConstructValidation.sh --script /app/scripts -i /app/input -o /app/output [options]
-
+e.g. Command line to analyze the demo data:
+./ConstructValidation.sh --script /app/scripts -i /app/input -o /app/output \
+  -q_chopper 13 \
+  --optimizing_eE \
+  --amino_acid_seq_validation
+  
 ```
 
 The available options for the shell script are listed below.
@@ -270,7 +282,7 @@ The default values of the `q_chopper`, `e`, `E` and `medaka_model` are optimized
 
 ### Output
 
-The final results will be presented as an [Excel file](./demo/Analysis_Results/OutputFiles/Summary.xlsx) and an accompanying [HTML report](./demo/Analysis_Results/OutputFiles/Report.html). The most informative columns in the first two sheets of the Excel file are explained below. Descriptions of the columns in the "All_Info" sheet and the results of all steps from the pipeline can be found in the ["Output_Descriptions.md"](./Output_Descriptions.md).   
+The final results will be presented as an [Excel file](./Output/demo/OutputFiles/Summary.xlsx) and an accompanying [HTML report](./Output/demo/OutputFiles/Report.html). The most informative columns in the first two sheets of the Excel file are explained below. Descriptions of the columns in the "All_Info" sheet and the results of all steps from the pipeline can be found in the ["Output_Descriptions.md"](./Output_Descriptions.md).   
 
 | Column Name | Type | Description |
 |-------|------|-------------|
