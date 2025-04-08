@@ -286,7 +286,7 @@ The default values of the `q_chopper`, `e`, `E` and `medaka_model` are optimized
 
 ### Output
 
-The final results will be presented as an [Excel file](./Output/demo/OutputFiles/Summary.xlsx) and an accompanying [HTML report](./Output/demo/OutputFiles/Report.html). The most informative columns in the first two sheets of the Excel file are explained below. Descriptions of the columns in the "All_Info" sheet and the results of all steps from the pipeline can be found in the [Output_Descriptions.md](./Output_Descriptions.md).   
+The final results will be presented as an [Excel file](./Output/demo/OutputFiles/Summary.xlsx) and an accompanying [HTML report](./Output/demo/OutputFiles/Report.html). The most informative columns in the first two sheets of the Excel file are explained below. Descriptions of the columns in the "All_Info" sheet and the results of all steps from the pipeline can be found in the [here](./Output_Descriptions.md).   
 
 | Column Name | Type | Description |
 |-------|------|-------------|
@@ -321,7 +321,7 @@ If you need any help or support related to this app, feel free to contact us at 
 
 ## License & DOI
 
-This project is licensed under the GNU General Public License, version 3 (GPLv3) - see the LICENSE.md file for details, and the DOI for the pipeline is [![DOI](https://zenodo.org/badge/851862809.svg)](https://doi.org/10.5281/zenodo.14681407).  
+This project is licensed under the GNU General Public License, version 3 (GPLv3) - see the LICENSE.md file for details, and the DOI for the pipeline is [![DOI](https://zenodo.org/badge/926691521.svg)](https://doi.org/10.5281/zenodo.15176482).  
   
 [(Back to top)](#construct-validation-for-iggypop)
 
