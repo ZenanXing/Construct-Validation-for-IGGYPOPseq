@@ -1,7 +1,0 @@
-FileName	Reference	Start	End	Reads_Mapped	Covered_Bases	Coverage_Percentage	Mean_Depth	Mean_Base_Quality	Mean_Mapping_Quality
-./Alignment/set191_1.sorted.bam	Cc04_g05340	1	643	30	643	100	23.8554	28	60
-./Alignment/set191_2.sorted.bam	Cc04_g05340	1	643	65	643	100	60.7356	26.8	60
-./Alignment/set191_3.sorted.bam	Cc04_g05340	1	643	74	643	100	66.661	27.1	60
-./Alignment/set191_4.sorted.bam	Cc04_g05340	1	643	87	615	95.6454	77.3935	26.5	60
-./Alignment/set191_6.sorted.bam	Cc04_g05340	1	643	413	641	99.689	355.776	26.9	60
-./Alignment/set191_5.sorted.bam	Cc04_g05340	1	643	1122	643	100	1063.64	28	60
