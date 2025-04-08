@@ -286,7 +286,7 @@ The default values of the `q_chopper`, `e`, `E` and `medaka_model` are optimized
 
 ### Output
 
-The final results will be presented as an [Excel file](./Output/demo/OutputFiles/Summary.xlsx) and an accompanying [HTML report](./Output/demo/OutputFiles/Report.html). The most informative columns in the first two sheets of the Excel file are explained below. Descriptions of the columns in the "All_Info" sheet and the results of all steps from the pipeline can be found in the ["Output_Descriptions.md"](./Output_Descriptions.md).   
+The final results will be presented as an [Excel file](./Output/demo/OutputFiles/Summary.xlsx) and an accompanying [HTML report](./Output/demo/OutputFiles/Report.html). The most informative columns in the first two sheets of the Excel file are explained below. Descriptions of the columns in the "All_Info" sheet and the results of all steps from the pipeline can be found in the [Output_Descriptions.md](./Output_Descriptions.md).   
 
 | Column Name | Type | Description |
 |-------|------|-------------|
@@ -327,7 +327,7 @@ This project is licensed under the GNU General Public License, version 3 (GPLv3)
 
 ## Citation
 
-*Dvir G, Xing Z, Beldman I, Wheeldon I, Cutler SR. Rapid synthesis of genes and single-transcript metabolic pathways from oligonucleotide pools: design of STARBURST, a bright autobioluminescent reporter (manuscript in preparation)*  
+*Dvir G, Xing Z, Beldman I, Rivera A, Wheeldon I, Cutler SR. Synthesis of large single-transcript pathways from oligonucleotide pools: design of STARBURST, an autobioluminescent reporter (manuscript in preparation)*  
 
 ## References
 
