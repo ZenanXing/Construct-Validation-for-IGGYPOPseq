@@ -314,7 +314,7 @@ The final results will be presented as an [Excel file](./Output/demo/OutputFiles
 
 ### Help
 
-If you need any help or support related to this app, feel free to contact us at zxing001@ucr.edu, and the issues can also be reported on https://github.com/ZenanXing/Construct-Validation-for-IGGYPOPseq/issues.  
+If you need any help or support related to this pipeline, feel free to contact us at zxing001@ucr.edu, and the issues can also be reported on https://github.com/ZenanXing/Construct-Validation-for-IGGYPOPseq/issues.  
   
 [(Back to top)](#construct-validation-for-iggypop)
 
