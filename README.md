@@ -82,7 +82,7 @@ The `SampleInfo.tsv` file should have the following columns. An example file is 
 | SampleID | string | Sample ID for the samples, usually a combination of the primer index and the replicate number. Must be unique for each sample. |
 | n_frags | int | Number of fragments. |
 | CDS_length | int | Optional, the length of CDS (coding sequence) if the reference sequence is CDS and the user want to detect missense/silent mutation. |
-| Reference | string | Name of the reference, please avoiding dots(.) and quotation marks(' or ") in the name. |
+| Reference | string | Name of the reference, please avoiding dots(.), quotation marks(' or "), or slash(/) in the name. |
 | ReferenceSequence | string | Sequence of the reference. |
 | Fwindex | string | Sequence of forward barcode. |
 | FwPrimer | string | Sequence of forward primer. |
