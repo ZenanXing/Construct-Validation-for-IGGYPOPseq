@@ -239,7 +239,7 @@ The default values of the `q_chopper`, `e`, `E` and `medaka_model` are optimized
   
    The following scripts allow for parallel analysis of all samples on cluster with SLURM.
 
-  1. Download the required [scripts](./Parallelized_Analyses) from the GitHub. Ensure that the following files are present within their respective folders after downloading.  
+  1. Download the required scripts in the folder called [Parallelized_Analyses](./Parallelized_Analyses) from the GitHub. Ensure that the following files are present within their respective folders after downloading.  
 
 ``` 
 ├── Scripts
@@ -253,7 +253,7 @@ The default values of the `q_chopper`, `e`, `E` and `medaka_model` are optimized
 └── ConstructValidation.sh
 ```
 
-  2. Ensure the required [software and R packages](#requirements) are properly installed on cluster. Some packages may need to be installed via Conda. For example, most software is available on our cluster (HPCC, High-Performance Computing Center), but chopper should be installed separately using the following command: `conda create -n chopper_env -c conda-forge -c bioconda chopper`.  
+  2. Ensure the required [software and R packages](#requirements) are properly installed on cluster. Some packages may need to be installed via Conda. For example, most software is available on our cluster (HPCC, High-Performance Computing Center), but chopper should be installed separately using the following command: `conda create -n chopper_env -c conda-forge -c bioconda chopper`. Additionally, please ensure to change the directory to the corresponding Conda environment on lines 153 and 188 in `ConstructValidation.sh`.   
   You may also need to adjust the shell script to properly load the software on your cluster. In the shell script provided, the software is loaded by `module load <software>`, as Module Environment is available on our cluster.  
 
   3. Execute the pipeline using the following command line: 
