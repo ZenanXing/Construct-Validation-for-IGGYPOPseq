@@ -1,3 +1,3 @@
-Parallelized_Analyses/Scripts/minibar.py -linguist-vendored
-Scripts/Scripts/minibar.py -linguist-vendored
+Parallelized_Analyses/Scripts/minibar.py linguist-vendored
+Scripts/Scripts/minibar.py linguist-vendored
 Output/demo/OutputFiles/** linguist-vendored
