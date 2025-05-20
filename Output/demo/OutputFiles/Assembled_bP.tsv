@@ -1,0 +1,13 @@
+FileName	chr	length	#A	#C	#G	#T	#2	#3	#4	#CpG	#tv	#ts	#CpG-ts
+./Assembly/bedtools/bed/set191_1_draft.fasta	Cc04_g05340	643	194	88	112	167	0	0	82	8	0	0	0
+./Assembly/bedtools/bed/set191_1_draft_f.fasta	set191_1_draft	643	194	88	112	167	0	0	82	8	0	0	0
+./Assembly/bedtools/bed/set191_2_draft.fasta	Cc04_g05340	643	217	97	129	196	1	0	3	8	0	1	0
+./Assembly/bedtools/bed/set191_2_draft_f.fasta	set191_2_draft	643	217	97	129	196	1	0	3	8	0	1	0
+./Assembly/bedtools/bed/set191_3_draft.fasta	Cc04_g05340	643	217	99	131	196	0	0	0	8	0	0	0
+./Assembly/bedtools/bed/set191_3_draft_f.fasta	set191_3_draft	643	217	99	131	196	0	0	0	8	0	0	0
+./Assembly/bedtools/bed/set191_4_draft.fasta	Cc04_g05340	643	204	93	125	190	0	0	31	8	0	0	0
+./Assembly/bedtools/bed/set191_4_draft_f.fasta	set191_4_draft	643	204	93	125	190	0	0	31	8	0	0	0
+./Assembly/bedtools/bed/set191_5_draft.fasta	Cc04_g05340	643	216	99	132	195	1	0	0	8	1	0	0
+./Assembly/bedtools/bed/set191_5_draft_f.fasta	set191_5_draft	643	216	99	132	195	1	0	0	8	1	0	0
+./Assembly/bedtools/bed/set191_6_draft.fasta	Cc04_g05340	643	218	98	129	195	0	0	3	8	0	0	0
+./Assembly/bedtools/bed/set191_6_draft_f.fasta	set191_6_draft	643	218	98	129	195	0	0	3	8	0	0	0

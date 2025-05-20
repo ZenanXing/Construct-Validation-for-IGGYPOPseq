@@ -1,0 +1,249 @@
+########################################
+# Program: needle
+# Rundate: Tue  1 Apr 2025 15:12:54
+# Commandline: needle
+#    -asequence ReferenceORFs/Cc04_g05340_orf.fasta
+#    -bsequence ./AssembledORFs/combinedORFs/set191_1_comb.fasta
+#    -gapopen 10
+#    -gapextend 0.5
+#    -outfile ../OutputFiles/aaAlignment/set191_1_aa_align_emboss.txt
+# Align_format: srspair
+# Report_file: ../OutputFiles/aaAlignment/set191_1_aa_align_emboss.txt
+########################################
+
+#=======================================
+#
+# Aligned_sequences: 2
+# 1: Cc04_g05340_1
+# 2: set191_1_draft
+# Matrix: EBLOSUM62
+# Gap_penalty: 10.0
+# Extend_penalty: 0.5
+#
+# Length: 228
+# Identity:       5/228 ( 2.2%)
+# Similarity:     8/228 ( 3.5%)
+# Gaps:         212/228 (93.0%)
+# Score: 18.0
+# 
+#
+#=======================================
+
+Cc04_g05340_1      1 MAKSSKQKTSSTTTTTTTSIDADNNNSSNSTTPVVKTTKTKRTRKSVPRD     50
+                                                                       
+set191_1_draf      0 --------------------------------------------------      0
+
+Cc04_g05340_1     51 SPQQRSSVYRGVTRHRWTGRYEAHLWDKNCWNESQNKKGRQVYLGAYDDE    100
+                                                                       
+set191_1_draf      0 --------------------------------------------------      0
+
+Cc04_g05340_1    101 EAAAHAYDLAALKYWGQDTILNFPLSTYGNELSEMEGQSKEEYIGSLRRK    150
+                                                                       
+set191_1_draf      0 --------------------------------------------------      0
+
+Cc04_g05340_1    151 SSGFSRGVSKYRGVARHHHNGRWEARIGRVFGNKYLYLGTYVTPMHVMQL    200
+                                                                    |.|
+set191_1_draf      1 -----------------------------------------------MAL      3
+
+Cc04_g05340_1    201 HKKKQRLHMTWQQ---------------    213
+                     .|:..:|.:..|.               
+set191_1_draf      4 SKRHLQLQLLLQLLLTPIIIILLLLLLL     31
+
+
+#=======================================
+#
+# Aligned_sequences: 2
+# 1: Cc04_g05340_1
+# 2: set191_1_medaka_1rd
+# Matrix: EBLOSUM62
+# Gap_penalty: 10.0
+# Extend_penalty: 0.5
+#
+# Length: 229
+# Identity:       5/229 ( 2.2%)
+# Similarity:     8/229 ( 3.5%)
+# Gaps:         210/229 (91.7%)
+# Score: 11.0
+# 
+#
+#=======================================
+
+Cc04_g05340_1      1 MAKSSKQKTSSTTTTTTTSIDADNNNSSNSTTPVVKTTKTKRTRKSVPRD     50
+                                                                       
+set191_1_meda      0 --------------------------------------------------      0
+
+Cc04_g05340_1     51 SPQQRSSVYRGVTRHRWTGRYEAHLWDKNCWNESQNKKGRQVYLGAYDDE    100
+                                                                       
+set191_1_meda      0 --------------------------------------------------      0
+
+Cc04_g05340_1    101 EAAAHAYDLAALKYWGQDTILNFPLSTYGNELSEMEGQSKEEYIGSLRRK    150
+                                                                       
+set191_1_meda      0 --------------------------------------------------      0
+
+Cc04_g05340_1    151 SSGFSRGVSKYRGVARHHHNGRWEARIGRVFGNKYLYLGTYVTPMHVMQL    200
+                                                                 |....|
+set191_1_meda      1 --------------------------------------------MAESFL      6
+
+Cc04_g05340_1    201 HKKKQRLHMTWQQ----------------    213
+                     .|:..:|.:..|.                
+set191_1_meda      7 SKRHLQLQLLLQLLLTPIIIILLILLLLL     35
+
+
+#=======================================
+#
+# Aligned_sequences: 2
+# 1: Cc04_g05340_1
+# 2: set191_1_racon_1rd
+# Matrix: EBLOSUM62
+# Gap_penalty: 10.0
+# Extend_penalty: 0.5
+#
+# Length: 229
+# Identity:       5/229 ( 2.2%)
+# Similarity:     8/229 ( 3.5%)
+# Gaps:         210/229 (91.7%)
+# Score: 11.0
+# 
+#
+#=======================================
+
+Cc04_g05340_1      1 MAKSSKQKTSSTTTTTTTSIDADNNNSSNSTTPVVKTTKTKRTRKSVPRD     50
+                                                                       
+set191_1_raco      0 --------------------------------------------------      0
+
+Cc04_g05340_1     51 SPQQRSSVYRGVTRHRWTGRYEAHLWDKNCWNESQNKKGRQVYLGAYDDE    100
+                                                                       
+set191_1_raco      0 --------------------------------------------------      0
+
+Cc04_g05340_1    101 EAAAHAYDLAALKYWGQDTILNFPLSTYGNELSEMEGQSKEEYIGSLRRK    150
+                                                                       
+set191_1_raco      0 --------------------------------------------------      0
+
+Cc04_g05340_1    151 SSGFSRGVSKYRGVARHHHNGRWEARIGRVFGNKYLYLGTYVTPMHVMQL    200
+                                                                 |....|
+set191_1_raco      1 --------------------------------------------MAESFL      6
+
+Cc04_g05340_1    201 HKKKQRLHMTWQQ----------------    213
+                     .|:..:|.:..|.                
+set191_1_raco      7 SKRHLQLQLLLQLLLTPIIIILLILLLLL     35
+
+
+#=======================================
+#
+# Aligned_sequences: 2
+# 1: Cc04_g05340_1
+# 2: set191_1_racon_2rd
+# Matrix: EBLOSUM62
+# Gap_penalty: 10.0
+# Extend_penalty: 0.5
+#
+# Length: 229
+# Identity:       5/229 ( 2.2%)
+# Similarity:     8/229 ( 3.5%)
+# Gaps:         210/229 (91.7%)
+# Score: 11.0
+# 
+#
+#=======================================
+
+Cc04_g05340_1      1 MAKSSKQKTSSTTTTTTTSIDADNNNSSNSTTPVVKTTKTKRTRKSVPRD     50
+                                                                       
+set191_1_raco      0 --------------------------------------------------      0
+
+Cc04_g05340_1     51 SPQQRSSVYRGVTRHRWTGRYEAHLWDKNCWNESQNKKGRQVYLGAYDDE    100
+                                                                       
+set191_1_raco      0 --------------------------------------------------      0
+
+Cc04_g05340_1    101 EAAAHAYDLAALKYWGQDTILNFPLSTYGNELSEMEGQSKEEYIGSLRRK    150
+                                                                       
+set191_1_raco      0 --------------------------------------------------      0
+
+Cc04_g05340_1    151 SSGFSRGVSKYRGVARHHHNGRWEARIGRVFGNKYLYLGTYVTPMHVMQL    200
+                                                                 |....|
+set191_1_raco      1 --------------------------------------------MAESFL      6
+
+Cc04_g05340_1    201 HKKKQRLHMTWQQ----------------    213
+                     .|:..:|.:..|.                
+set191_1_raco      7 SKRHLQLQLLLQLLLTPIIIILLILLLLL     35
+
+
+#=======================================
+#
+# Aligned_sequences: 2
+# 1: Cc04_g05340_1
+# 2: set191_1_racon_3rd
+# Matrix: EBLOSUM62
+# Gap_penalty: 10.0
+# Extend_penalty: 0.5
+#
+# Length: 229
+# Identity:       5/229 ( 2.2%)
+# Similarity:     8/229 ( 3.5%)
+# Gaps:         210/229 (91.7%)
+# Score: 11.0
+# 
+#
+#=======================================
+
+Cc04_g05340_1      1 MAKSSKQKTSSTTTTTTTSIDADNNNSSNSTTPVVKTTKTKRTRKSVPRD     50
+                                                                       
+set191_1_raco      0 --------------------------------------------------      0
+
+Cc04_g05340_1     51 SPQQRSSVYRGVTRHRWTGRYEAHLWDKNCWNESQNKKGRQVYLGAYDDE    100
+                                                                       
+set191_1_raco      0 --------------------------------------------------      0
+
+Cc04_g05340_1    101 EAAAHAYDLAALKYWGQDTILNFPLSTYGNELSEMEGQSKEEYIGSLRRK    150
+                                                                       
+set191_1_raco      0 --------------------------------------------------      0
+
+Cc04_g05340_1    151 SSGFSRGVSKYRGVARHHHNGRWEARIGRVFGNKYLYLGTYVTPMHVMQL    200
+                                                                 |....|
+set191_1_raco      1 --------------------------------------------MAESFL      6
+
+Cc04_g05340_1    201 HKKKQRLHMTWQQ----------------    213
+                     .|:..:|.:..|.                
+set191_1_raco      7 SKRHLQLQLLLQLLLTPIIIILLILLLLL     35
+
+
+#=======================================
+#
+# Aligned_sequences: 2
+# 1: Cc04_g05340_1
+# 2: set191_1_sam
+# Matrix: EBLOSUM62
+# Gap_penalty: 10.0
+# Extend_penalty: 0.5
+#
+# Length: 229
+# Identity:       5/229 ( 2.2%)
+# Similarity:     8/229 ( 3.5%)
+# Gaps:         213/229 (93.0%)
+# Score: 18.0
+# 
+#
+#=======================================
+
+Cc04_g05340_1      1 MAKSSKQKTSSTTTTTTTSIDADNNNSSNSTTPVVKTTKTKRTRKSVPRD     50
+                                                                       
+set191_1_sam       0 --------------------------------------------------      0
+
+Cc04_g05340_1     51 SPQQRSSVYRGVTRHRWTGRYEAHLWDKNCWNESQNKKGRQVYLGAYDDE    100
+                                                                       
+set191_1_sam       0 --------------------------------------------------      0
+
+Cc04_g05340_1    101 EAAAHAYDLAALKYWGQDTILNFPLSTYGNELSEMEGQSKEEYIGSLRRK    150
+                                                                       
+set191_1_sam       0 --------------------------------------------------      0
+
+Cc04_g05340_1    151 SSGFSRGVSKYRGVARHHHNGRWEARIGRVFGNKYLYLGTYVTPMHVMQL    200
+                                                                    |.|
+set191_1_sam       1 -----------------------------------------------MAL      3
+
+Cc04_g05340_1    201 HKKKQRLHMTWQQ----------------    213
+                     .|:..:|.:..|.                
+set191_1_sam       4 SKRHLQLQLLLQLLLTPIIIILLILLLLL     32
+
+
+#---------------------------------------
+#---------------------------------------
