@@ -74,7 +74,7 @@ Input
 └── passed_all.fastq
 ```
   
-The `SampleInfo.tsv` file should have the following columns. An example file is available [here](./Input/demo/SampleInfo.tsv).  
+The `SampleInfo.tsv` file should have the following columns. An example file is available [here](./Input/demo/SampleInfo.tsv). You can use [Tidy Buddy](https://github.com/ZenanXing/Tidy-Buddy.git) to generate this file providing [ReferenceInfo.xlsx](https://github.com/cutlersr/iggypop/blob/main/out/test/test_ReferenceInfo.xlsx) from IGGYPOP as the input.  
   
 | Parameter name  | Type | Description |
 |-----------------|------|-------------|
@@ -82,11 +82,11 @@ The `SampleInfo.tsv` file should have the following columns. An example file is 
 | SampleID | string | Sample ID for the samples, usually a combination of the primer index and the replicate number. Must be unique for each sample. |
 | n_frags | int | Number of fragments. |
 | CDS_length | int | Optional, the length of CDS (coding sequence) if the reference sequence is CDS and the user want to detect missense/silent mutation. |
-| Reference | string | Name of the reference, please avoiding dots(.), quotation marks(' or "), or slash(/) in the name. |
+| ReferenceName | string | Name of the reference, please avoiding dots(.), quotation marks(' or "), or slash(/) in the name. |
 | ReferenceSequence | string | Sequence of the reference. |
-| Fwindex | string | Sequence of forward barcode. |
+| FwBarcode | string | Sequence of forward barcode. |
 | FwPrimer | string | Sequence of forward primer. |
-| Rvindex | string | Sequence of reverse barcode. |
+| RvBarcode | string | Sequence of reverse barcode. |
 | RvPrimer | string | Sequence of reverse primer. |
   
 
