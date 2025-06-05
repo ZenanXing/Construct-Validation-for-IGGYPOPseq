@@ -38,6 +38,7 @@ library(ggplot2)
 library(cowplot)
 library(openxlsx)
 library(rmarkdown)
+library(RColorBrewer)
 ```
 ```{r setup, include=FALSE}
 # Accessing the parameters inside R code chunks

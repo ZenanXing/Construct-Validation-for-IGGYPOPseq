@@ -3,7 +3,7 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2     # This will be the number of CPUs per individual array job
 #SBATCH --mem=10G     # This will be the memory per individual array job
-#SBATCH --time=0-02:00:00     # 20 minutes
+#SBATCH --time=0-01:00:00     # 1 hour
 
 ## Set variables
 SCRIPT_DIR=$1
@@ -27,7 +27,7 @@ parallel 'echo -e {/}"\t"$(cat {} | wc -l | awk "{{print int(\$1/4)}}")' ::: ./D
 
 ### Alignment
 ## Export alignment results using samtools:
-echo -e "FileName\tReference\tStart\tEnd\tReads_Mapped\tCovered_Bases\tCoverage_Percentage\tMean_Depth\tMean_Base_Quality\tMean_Mapping_Quality" > OutputFiles/Alignment.tsv # Print the header (adjust according to the samtools coverage output)
+echo -e "FileName\tReferenceName\tStart\tEnd\tReads_Mapped\tCovered_Bases\tCoverage_Percentage\tMean_Depth\tMean_Base_Quality\tMean_Mapping_Quality" > OutputFiles/Alignment.tsv # Print the header (adjust according to the samtools coverage output)
 parallel "samtools coverage {} | awk -v OFS='\t' -v file={} 'NR>1 {print file, \$1, \$2, \$3, \$4, \$5, \$6, \$7, \$8, \$9}' >> OutputFiles/Alignment.tsv" ::: ./Alignment/*.sorted.bam
 
 
@@ -78,17 +78,17 @@ sort -t$'\t' -k1 OutputFiles/Medaka_1rdP.tsv
 ### Variant Calling
 ## after racon polishing
 # 1st round
-echo -e "SampleID\tReference\tType\tPosition\tRef_allele\tAlt_allele" > OutputFiles/VariantCalling_racon_1rd.tsv
+echo -e "SampleID\tReferenceName\tType\tPosition\tRef_allele\tAlt_allele" > OutputFiles/VariantCalling_racon_1rd.tsv
 parallel 'bname=$(basename {} _racon_1rd.all.vcf); bcftools query -f "%CHROM\t%TYPE\t%POS\t%REF\t%ALT\n" {} | awk -v bname="$bname" "{print bname \"\t\" \$0}"' ::: ./VariantCalling/afterPolishing/racon/1rd/*.all.vcf >> OutputFiles/VariantCalling_racon_1rd.tsv
 # 2nd round
-echo -e "SampleID\tReference\tType\tPosition\tRef_allele\tAlt_allele" > OutputFiles/VariantCalling_racon_2rd.tsv
+echo -e "SampleID\tReferenceName\tType\tPosition\tRef_allele\tAlt_allele" > OutputFiles/VariantCalling_racon_2rd.tsv
 parallel 'bname=$(basename {} _racon_2rd.all.vcf); bcftools query -f "%CHROM\t%TYPE\t%POS\t%REF\t%ALT\n" {} | awk -v bname="$bname" "{print bname \"\t\" \$0}"' ::: ./VariantCalling/afterPolishing/racon/2rd/*.all.vcf >> OutputFiles/VariantCalling_racon_2rd.tsv
 # 3rd round
-echo -e "SampleID\tReference\tType\tPosition\tRef_allele\tAlt_allele" > OutputFiles/VariantCalling_racon_3rd.tsv
+echo -e "SampleID\tReferenceName\tType\tPosition\tRef_allele\tAlt_allele" > OutputFiles/VariantCalling_racon_3rd.tsv
 parallel 'bname=$(basename {} _racon_3rd.all.vcf); bcftools query -f "%CHROM\t%TYPE\t%POS\t%REF\t%ALT\n" {} | awk -v bname="$bname" "{print bname \"\t\" \$0}"' ::: ./VariantCalling/afterPolishing/racon/3rd/*.all.vcf >> OutputFiles/VariantCalling_racon_3rd.tsv
 ## after medaka polishing
 # 1st round
-echo -e "SampleID\tReference\tType\tPosition\tRef_allele\tAlt_allele" > OutputFiles/VariantCalling_medaka_1rd.tsv
+echo -e "SampleID\tReferenceName\tType\tPosition\tRef_allele\tAlt_allele" > OutputFiles/VariantCalling_medaka_1rd.tsv
 parallel 'bname=$(basename {} _medaka_1rd.all.vcf); bcftools query -f "%CHROM\t%TYPE\t%POS\t%REF\t%ALT\n" {} | awk -v bname="$bname" "{print bname \"\t\" \$0}"' ::: ./VariantCalling/afterPolishing/medaka_1rd/*.all.vcf >> OutputFiles/VariantCalling_medaka_1rd.tsv
 
 

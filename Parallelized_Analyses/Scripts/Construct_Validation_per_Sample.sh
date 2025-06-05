@@ -3,7 +3,7 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2     # This will be the number of CPUs per individual array job
 #SBATCH --mem=20G     # This will be the memory per individual array job
-#SBATCH --time=0-04:00:00     # 1 hrs
+#SBATCH --time=0-04:00:00     # 4 hrs
 #SBATCH --job-name="analysis"
 
 # Set variables
@@ -19,7 +19,7 @@ config=$OUTPUT_DIR/Analysis_Results/InputFiles/config_sample.txt
 # SampleID
 SampleID=$(awk -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$1==ArrayTaskID {print $2}' $config)
 # ReferenceName
-Reference=$(awk -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$1==ArrayTaskID {print $3}' $config)
+ReferenceName=$(awk -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$1==ArrayTaskID {print $3}' $config)
 
 ### Load the required modules
 module load parallel # Run the code in parallel
@@ -33,7 +33,7 @@ module load muscle/3.8.31 # Pairwise Alignment
 ## Change the directory and create required directory:
 cd $OUTPUT_DIR/Analysis_Results/Alignment
 ## Alignment suing minimap2
-minimap2 -ax map-ont --secondary=no ../InputFiles/references/${Reference}.fasta ../Demultiplexing/final/${SampleID}_filtered.fastq > ${SampleID}.sam
+minimap2 -ax map-ont --secondary=no ../InputFiles/references/${ReferenceName}.fasta ../Demultiplexing/final/${SampleID}_filtered.fastq > ${SampleID}.sam
 # Convert SAM to BAM
 samtools view -q 60 -F 2048 -S -b ${SampleID}.sam -o ${SampleID}.bam
 # Sort BAM files
@@ -44,7 +44,7 @@ samtools index ${SampleID}.sorted.bam
 ### Variant calling - before Polishing - using bcftools
 cd $OUTPUT_DIR/Analysis_Results/VariantCalling
 ## Variant calling using bcftools and samtools
-bcftools mpileup -Ou -f ../InputFiles/references/${Reference}.fasta ../Alignment/${SampleID}.sorted.bam | bcftools call -cv -Ov > ./beforePolishing/${SampleID}_bP.vcf
+bcftools mpileup -Ou -f ../InputFiles/references/${ReferenceName}.fasta ../Alignment/${SampleID}.sorted.bam | bcftools call -cv -Ov > ./beforePolishing/${SampleID}_bP.vcf
 
 ### Assembly
 cd $OUTPUT_DIR/Analysis_Results/Assembly
@@ -97,17 +97,17 @@ cd $OUTPUT_DIR/Analysis_Results/VariantCalling
 module load medaka
 ## after racon polishing
 # 1st round
-medaka tools consensus2vcf --mode NW --out_prefix ./afterPolishing/racon/1rd/${SampleID}_racon_1rd ../Assembly/racon/1rd/${SampleID}_racon_1rd.fasta ../InputFiles/references/${Reference}.fasta
+medaka tools consensus2vcf --mode NW --out_prefix ./afterPolishing/racon/1rd/${SampleID}_racon_1rd ../Assembly/racon/1rd/${SampleID}_racon_1rd.fasta ../InputFiles/references/${ReferenceName}.fasta
 medaka tools classify_variants ./afterPolishing/racon/1rd/${SampleID}_racon_1rd.vcf
 # 2nd round
-medaka tools consensus2vcf --mode NW --out_prefix ./afterPolishing/racon/2rd/${SampleID}_racon_2rd ../Assembly/racon/2rd/${SampleID}_racon_2rd.fasta ../InputFiles/references/${Reference}.fasta
+medaka tools consensus2vcf --mode NW --out_prefix ./afterPolishing/racon/2rd/${SampleID}_racon_2rd ../Assembly/racon/2rd/${SampleID}_racon_2rd.fasta ../InputFiles/references/${ReferenceName}.fasta
 medaka tools classify_variants ./afterPolishing/racon/2rd/${SampleID}_racon_2rd.vcf
 # 3rd round
-medaka tools consensus2vcf --mode NW --out_prefix ./afterPolishing/racon/3rd/${SampleID}_racon_3rd ../Assembly/racon/3rd/${SampleID}_racon_3rd.fasta ../InputFiles/references/${Reference}.fasta
+medaka tools consensus2vcf --mode NW --out_prefix ./afterPolishing/racon/3rd/${SampleID}_racon_3rd ../Assembly/racon/3rd/${SampleID}_racon_3rd.fasta ../InputFiles/references/${ReferenceName}.fasta
 medaka tools classify_variants ./afterPolishing/racon/3rd/${SampleID}_racon_3rd.vcf
 ## after medaka polishing
 # 1st round
-medaka tools consensus2vcf --mode NW --out_prefix ./afterPolishing/medaka_1rd/${SampleID}_medaka_1rd ../Assembly/medaka/1rd/${SampleID}_medaka_1rd.fasta ../InputFiles/references/${Reference}.fasta
+medaka tools consensus2vcf --mode NW --out_prefix ./afterPolishing/medaka_1rd/${SampleID}_medaka_1rd ../Assembly/medaka/1rd/${SampleID}_medaka_1rd.fasta ../InputFiles/references/${ReferenceName}.fasta
 medaka tools classify_variants ./afterPolishing/medaka_1rd/${SampleID}_medaka_1rd.vcf
 
 
@@ -115,12 +115,12 @@ medaka tools classify_variants ./afterPolishing/medaka_1rd/${SampleID}_medaka_1r
 cd $OUTPUT_DIR/Analysis_Results/PairwiseAlignment
 ## Align all the seqs by muscle
 # Combine all the fasta files in one file
-cat ../InputFiles/references/${Reference}.fasta ../Assembly/bedtools/sam/${SampleID}_sam_f.fasta ../Assembly/bedtools/bed/${SampleID}_draft_f.fasta ../Assembly/racon/1rd/${SampleID}_racon_1rd_f.fasta ../Assembly/racon/2rd/${SampleID}_racon_2rd_f.fasta ../Assembly/racon/3rd/${SampleID}_racon_3rd_f.fasta ../Assembly/medaka/1rd/${SampleID}_medaka_1rd_f.fasta > ./combined_fasta/${SampleID}_comb.fasta
+cat ../InputFiles/references/${ReferenceName}.fasta ../Assembly/bedtools/sam/${SampleID}_sam_f.fasta ../Assembly/bedtools/bed/${SampleID}_draft_f.fasta ../Assembly/racon/1rd/${SampleID}_racon_1rd_f.fasta ../Assembly/racon/2rd/${SampleID}_racon_2rd_f.fasta ../Assembly/racon/3rd/${SampleID}_racon_3rd_f.fasta ../Assembly/medaka/1rd/${SampleID}_medaka_1rd_f.fasta > ./combined_fasta/${SampleID}_comb.fasta
 # Alignments of all the assemblies using Muscle3
 muscle -in ./combined_fasta/${SampleID}_comb.fasta -out ../OutputFiles/ntAlignment/${SampleID}_nt_align_muscle.html -html
 ## Align sam&medaka_1rd to Reference by muscle
 # Combine all the fasta files in one file
-cat ../InputFiles/references/${Reference}.fasta ../Assembly/bedtools/sam/${SampleID}_sam_f.fasta ../Assembly/medaka/1rd/${SampleID}_medaka_1rd_f.fasta > ./combined_fasta/${SampleID}_comb.fasta
+cat ../InputFiles/references/${ReferenceName}.fasta ../Assembly/bedtools/sam/${SampleID}_sam_f.fasta ../Assembly/medaka/1rd/${SampleID}_medaka_1rd_f.fasta > ./combined_fasta/${SampleID}_comb.fasta
 # Alignments of all the assemblies using Muscle3
 muscle -in ./combined_fasta/${SampleID}_comb.fasta -out ../OutputFiles/ntAlignment/${SampleID}_nt_align_muscle_f.html -html
 
@@ -129,7 +129,7 @@ muscle -in ./combined_fasta/${SampleID}_comb.fasta -out ../OutputFiles/ntAlignme
 cat ../Assembly/bedtools/sam/${SampleID}_sam_f.fasta ../Assembly/bedtools/bed/${SampleID}_draft_f.fasta ../Assembly/racon/1rd/${SampleID}_racon_1rd_f.fasta ../Assembly/racon/2rd/${SampleID}_racon_2rd_f.fasta ../Assembly/racon/3rd/${SampleID}_racon_3rd_f.fasta ../Assembly/medaka/1rd/${SampleID}_medaka_1rd_f.fasta > ./combined_fasta/${SampleID}_comb.fasta
 sed "s/\*/N/g" ./combined_fasta/${SampleID}_comb.fasta > ./combined_fasta/${SampleID}_comb_cleaned.fasta
 # Alignments of all the assemblies using emboss
-needle -asequence ../InputFiles/references/${Reference}.fasta -bsequence ./combined_fasta/${SampleID}_comb_cleaned.fasta -gapopen 10 -gapextend 0.5 -outfile ../OutputFiles/ntAlignment/${SampleID}_nt_align_emboss.txt
+needle -asequence ../InputFiles/references/${ReferenceName}.fasta -bsequence ./combined_fasta/${SampleID}_comb_cleaned.fasta -gapopen 10 -gapextend 0.5 -outfile ../OutputFiles/ntAlignment/${SampleID}_nt_align_emboss.txt
 
 
 if $AA_Validation; then
@@ -160,12 +160,12 @@ if $AA_Validation; then
     
     ## align all the seqs by muscle
     # Combine all the fasta files in one file
-    cat ReferenceORFs/${Reference}_orf.fasta AssembledORFs/selectedORF/${SampleID}/*.fasta > AssembledORFs/combinedORFs/${SampleID}_comb.fasta
+    cat ReferenceORFs/${ReferenceName}_orf.fasta AssembledORFs/selectedORF/${SampleID}/*.fasta > AssembledORFs/combinedORFs/${SampleID}_comb.fasta
     # Alignments of all the assemblies using Muscle3
     muscle -in ./AssembledORFs/combinedORFs/${SampleID}_comb.fasta -out ../OutputFiles/aaAlignment/${SampleID}_aa_align_muscle.html -html
     ## align sam&medaka_1rd to Reference by muscle
     # Combine all the fasta files in one file
-    cat ReferenceORFs/${Reference}_orf.fasta AssembledORFs/selectedORF/${SampleID}/${SampleID}_sam_orf.fasta  AssembledORFs/selectedORF/${SampleID}/${SampleID}_medaka_1rd_orf.fasta > AssembledORFs/combinedORFs/${SampleID}_comb.fasta
+    cat ReferenceORFs/${ReferenceName}_orf.fasta AssembledORFs/selectedORF/${SampleID}/${SampleID}_sam_orf.fasta  AssembledORFs/selectedORF/${SampleID}/${SampleID}_medaka_1rd_orf.fasta > AssembledORFs/combinedORFs/${SampleID}_comb.fasta
     # Alignments of all the assemblies using Muscle3
     muscle -in ./AssembledORFs/combinedORFs/${SampleID}_comb.fasta -out ../OutputFiles/aaAlignment/${SampleID}_aa_align_muscle_f.html -html
     
@@ -173,5 +173,5 @@ if $AA_Validation; then
     # Combine all the fasta files in one file
     cat AssembledORFs/selectedORF/${SampleID}/*.fasta > AssembledORFs/combinedORFs/${SampleID}_comb.fasta
     # Alignments of all the assemblies using emboss
-    needle -asequence ReferenceORFs/${Reference}_orf.fasta -bsequence ./AssembledORFs/combinedORFs/${SampleID}_comb.fasta -gapopen 10 -gapextend 0.5 -outfile ../OutputFiles/aaAlignment/${SampleID}_aa_align_emboss.txt
+    needle -asequence ReferenceORFs/${ReferenceName}_orf.fasta -bsequence ./AssembledORFs/combinedORFs/${SampleID}_comb.fasta -gapopen 10 -gapextend 0.5 -outfile ../OutputFiles/aaAlignment/${SampleID}_aa_align_emboss.txt
 fi

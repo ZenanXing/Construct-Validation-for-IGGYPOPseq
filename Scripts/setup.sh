@@ -152,8 +152,8 @@ ln -s /usr/local/emboss/bin/* /usr/local/bin/
 
 # Install MUSCLE3 (3.8.31)
 echo "=== Installing MUSCLE3 (3.8.31) ==="
-wget https://drive5.com/muscle/downloads3.8.31/muscle3.8.31_src.tar.gz && \
-tar -xzf muscle3.8.31_src.tar.gz && \
-make -C muscle3.8.31/src && \
-cp muscle3.8.31/src/muscle /usr/local/bin/ && \
+wget https://drive5.com/muscle/downloads3.8.31/muscle3.8.31_src.tar.gz
+tar -xzf muscle3.8.31_src.tar.gz
+make -C muscle3.8.31/src
+cp muscle3.8.31/src/muscle /usr/local/bin/
 rm -rf muscle3.8.31_src.tar.gz muscle3.8.31

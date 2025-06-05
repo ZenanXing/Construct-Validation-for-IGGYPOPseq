@@ -3,7 +3,7 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2     # This will be the number of CPUs per individual array job
 #SBATCH --mem=20G     # This will be the memory per individual array job
-#SBATCH --time=0-06:00:00     # 4 hrs
+#SBATCH --time=0-06:00:00     # 6 hrs
 #SBATCH --job-name="demtplx_para_test"
 
 ## Set variables

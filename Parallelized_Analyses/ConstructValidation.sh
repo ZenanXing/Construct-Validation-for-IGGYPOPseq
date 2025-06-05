@@ -4,7 +4,7 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=10
 #SBATCH --mem=20G
-#SBATCH --time=0-6:00:00
+#SBATCH --time=0-8:00:00
 #SBATCH -p intel # This is the default partition, you can use any of the following; intel, batch, highmem, gpu
 
 ### Define options
@@ -80,28 +80,6 @@ module load seqtk # Polishing
 module load bcftools # Variant Calling
 module load emboss # Variant Identification
 module load muscle/3.8.31 # Pairwise Alignment
-
-
-### Install required R packages
-Rscript -e "
-# Install BiocManager if not installed
-if (!requireNamespace('BiocManager', quietly = TRUE)) {
-  install.packages('BiocManager')
-}
-
-# Install Biostrings if not installed
-if (!requireNamespace('Biostrings', quietly = TRUE)) {
-    BiocManager::install('Biostrings')
-  } 
-
-# Install CRAN packages if not installed
-packages <- c('tidyverse', 'openxlsx', 'seqinr', 'stringr', 'purrr', 'cowplot', 'rmarkdown')
-for (pkg in packages) {
-  if (!requireNamespace(pkg, quietly = TRUE)) {
-    install.packages(pkg)
-  }
-}
-"
 
 ### Making directory structure
 mkdir -p $OUTPUT_DIR/Analysis_Results/{Demultiplexing,VariantCalling/{beforePolishing,afterPolishing},Alignment,Assembly,PairwiseAlignment,InputFiles/references,OutputFiles/ntAlignment}
@@ -184,8 +162,6 @@ $SCRIPT_DIR/minibar.py ../../InputFiles/IndexCombination.txt $INPUT_DIR/passed_a
 ## Filtering with chopper
 # Create the chopper_env using conda
 #conda create -n chopper_env -c conda-forge -c bioconda chopper
-conda init
-source ~/bigdata/.conda/envs/chopper_env/bin/chopper
 conda activate chopper_env
 parallel 'chopper -q '$q_Chopper' -i {} > {.}_filtered.fastq' ::: *.fastq
 conda deactivate

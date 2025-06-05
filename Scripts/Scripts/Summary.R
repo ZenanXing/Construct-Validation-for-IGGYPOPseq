@@ -112,8 +112,8 @@ if (isTRUE(aa_validation)) {
     tidyr::unite(SampleID, PolishingStep, col = "comb", sep = "--")
   ## Mutation Identification
   df_ref_orf_length <- read.table("Ref_ORF_length.tsv", header = TRUE, sep = "\t") %>% 
-    mutate(Reference = gsub("./VariantIdentification/ReferenceORFs/(.*)_orf.fasta", "\\1", FileName)) %>% 
-    left_join(read.table(paste0(input_dir, "/SampleInfo.tsv"), header = TRUE, colClasses = "character") %>% dplyr::select(SampleID, Reference), by = "Reference") %>% 
+    mutate(ReferenceName = gsub("./VariantIdentification/ReferenceORFs/(.*)_orf.fasta", "\\1", FileName)) %>% 
+    left_join(read.table(paste0(input_dir, "/SampleInfo.tsv"), header = TRUE, colClasses = "character") %>% dplyr::select(SampleID, ReferenceName), by = "ReferenceName") %>% 
     dplyr::select(SampleID, RefORFlength)
   df_orf_length <- read.table("ORF_length.tsv", header = TRUE, sep = "\t") %>% 
     mutate(SampleID = gsub("(.*_[0-9]+)_(.*)", "\\1", chr),
@@ -140,11 +140,11 @@ if (isTRUE(aa_validation)) {
     full_join(df_ref_orf_length, by = "SampleID")
   df_mutid_misss <- df_mutid %>% 
     filter(missenseMutation_medaka_1rd == "Y") %>% 
-    left_join(read.table(paste0(input_dir, "/SampleInfo.tsv"), header = TRUE) %>% dplyr::select(SampleID, Reference), by = "SampleID")
+    left_join(read.table(paste0(input_dir, "/SampleInfo.tsv"), header = TRUE) %>% dplyr::select(SampleID, ReferenceName), by = "SampleID")
   if (nrow(df_mutid_misss) != 0) {
     mat_ret <- NULL
     for (i in 1:nrow(df_mutid_misss)) {
-      ref <- readAAStringSet(paste0("../VariantIdentification/ReferenceORFs/", df_mutid_misss$Reference[i], "_orf.fasta"))
+      ref <- readAAStringSet(paste0("../VariantIdentification/ReferenceORFs/", df_mutid_misss$ReferenceName[i], "_orf.fasta"))
       smp <- readAAStringSet(paste0("../VariantIdentification/AssembledORFs/selectedORF/", df_mutid_misss$SampleID[i], "/", df_mutid_misss$SampleID[i], "_medaka_1rd_orf.fasta"))
       alignment <- pairwiseAlignment(ref, smp, type="global")
       pos <- alignment@subject@mismatch@unlistData
@@ -217,7 +217,7 @@ df_csss <- df_csss %>%
 
 ## Final Table - full info.
 df_exp <- read.table(paste0(input_dir, "/SampleInfo.tsv"), header = TRUE) %>% 
-  dplyr::select(primer_index, SampleID, Reference, n_frags) %>% 
+  dplyr::select(primer_index, SampleID, ReferenceName, n_frags) %>% 
   left_join(df_dmtplx %>% dplyr::select(SampleID, Reads_sorted_after_Demultiplexing), by = "SampleID") %>% 
   left_join(df_align %>% dplyr::select(SampleID, Reads_Mapped, Coverage_Percentage, Mean_Depth, Mean_Base_Quality, Mean_Mapping_Quality, ref_DNA_Length), by = "SampleID") %>% 
   left_join(df_asmbly, by = "SampleID")
@@ -359,7 +359,7 @@ for (col in alignment_cols) { class(df_exp[[col]]) <- "hyperlink" }
 
 if (isTRUE(aa_validation)) {
   df_exp_all <- df_exp %>% 
-    dplyr::select(primer_index, SampleID, Reference, n_frags, ref_DNA_Length, 
+    dplyr::select(primer_index, SampleID, ReferenceName, n_frags, ref_DNA_Length, 
                   Reads_sorted_after_Demultiplexing, Reads_Mapped, Mean_Depth, 
                   Attention_LowDepth, Attention_PossibleHetSites, CompleteAssembled, CheckINDEL, Assembly_Status, 
                   ntCorrect_medaka_1rd, DNA_Identity_pct_medaka_1rd, Variant_medaka_1rd, 
@@ -369,7 +369,7 @@ if (isTRUE(aa_validation)) {
                   ConsensusSequence, ReferenceSequence)
 } else {
   df_exp_all <- df_exp %>% 
-    dplyr::select(primer_index, SampleID, Reference, n_frags, ref_DNA_Length, 
+    dplyr::select(primer_index, SampleID, ReferenceName, n_frags, ref_DNA_Length, 
                   Reads_sorted_after_Demultiplexing, Reads_Mapped, Mean_Depth, 
                   Attention_LowDepth, Attention_PossibleHetSites, CompleteAssembled, CheckINDEL, Assembly_Status, 
                   ntCorrect_medaka_1rd, DNA_Identity_pct_medaka_1rd, Variant_medaka_1rd, 
