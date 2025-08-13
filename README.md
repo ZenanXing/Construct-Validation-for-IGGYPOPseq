@@ -1,4 +1,4 @@
-# Construct Validation for IGGYPOP
+# Construct Validation for IGGYPOPseq
 We established a pipeline that performs comprehensive analysis for Nanopore sequencing data, designed to generate and validate the consensus sequences for constructs created using [IGGYPOP](https://github.com/cutlersr/iggypop) (indexed golden gate gene assembly from PCR amplified oligonucleotide pools). The pipeline identifies the best clone for each construct and provides detailed summaries at every step of the process.  
 
 ## Table of Content
@@ -326,7 +326,7 @@ This project is licensed under the GNU General Public License, version 3 (GPLv3)
 
 ## Citation
 
-*Dvir G, Xing Z, Beldman I, Rivera A, Wheeldon I, Cutler SR. Synthesis of large single-transcript pathways from oligonucleotide pools: design of STARBURST, an autobioluminescent reporter (manuscript in preparation)*  
+*Dvir G, Xing Z, Beldman I, Rivera A, Wheeldon I, Cutler SR. (2025) [Synthesis of large single-transcript pathways from oligonucleotide pools: Design of STARBURST, an autobioluminescent reporter](https://www.pnas.org/doi/10.1073/pnas.2508109122). Proc. Natl. Acad. Sci. U. S. A. 122, e2508109122.*  
 
 ## References
 
