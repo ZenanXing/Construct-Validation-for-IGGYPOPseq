@@ -21,7 +21,7 @@ We established a pipeline that performs comprehensive analysis for Nanopore sequ
 
 ## Pipeline Overview
 
-<img src="www/pipeline_exp.png" style="display: block; margin-left: auto; margin-right: auto; height: 500px;" />  
+![Pipeline](www/pipeline_exp.png)  
 In the complete pipeline, the input sequences (e.g., candidate genes) will first be properly fragmented and modified by [IGGYPOP](https://github.com/cutlersr/iggypop). Subsequently, the fragments will be synthesized, amplified, and reassembled into vectors, either pPlantPOP or pPOP for our research. After transformation, six colonies will be selected, then the target sequence can be amplified and multiplexed using the designed barcoded primers. A list of these primers and their suggested combinations can be found [here](./Input/PrimerAssignment). You may use them to add the primer and barcode(index) information and create the one of the input files - "SampleInfo.tsv". To assist in generating this file, we developed a Shiny app called [Tidy-Buddy](https://github.com/ZenanXing/Tidy-Buddy.git). The amplicons will then be pooled and sequenced using the MinION Flow Cell (Oxford Nanopore Technologies). The resulting FASTQ file, along with the "SampleInfo.tsv", will be utilized as input files in the IGGYPOPseq analysis, which will facilitate the generation of a consensus sequence for each clone, and then the selection of the best clone according to the following workflow.  
 
 ### Consensus Sequence Generation
